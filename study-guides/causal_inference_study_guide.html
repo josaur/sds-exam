@@ -1,0 +1,2697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Causal Inference Study Guide - Complete Solutions (Q1-Q15)</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --def-blue: #DBEEF4;
+            --def-blue-border: #5B9BD5;
+            --proof-green: #E2F0D9;
+            --proof-green-border: #70AD47;
+            --result-yellow: #FFF2CC;
+            --result-yellow-border: #FFC000;
+            --intuition-orange: #FCE4D6;
+            --intuition-orange-border: #ED7D31;
+            --assumption-purple: #E4DFEC;
+            --assumption-purple-border: #7030A0;
+            --vanish-red: #FFCCCB;
+            --vanish-red-border: #C00000;
+            --before-blue: #BDD7EE;
+            --after-green: #C6EFCE;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #333;
+        }
+        
+        h1 { text-align: center; color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 15px; }
+        h2 { color: #2980b9; border-left: 5px solid #3498db; padding-left: 15px; margin-top: 40px; }
+        h3 { color: #27ae60; margin-top: 25px; }
+        
+        .unit-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 20px; border-radius: 10px; margin: 30px 0;
+            text-align: center; font-size: 1.4em;
+        }
+        
+        .box { padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 5px solid; }
+        
+        .definition { background: var(--def-blue); border-color: var(--def-blue-border); }
+        .definition::before { content: "📘 DEFINITION"; font-weight: bold; color: var(--def-blue-border); display: block; margin-bottom: 10px; }
+        
+        .proof { background: var(--proof-green); border-color: var(--proof-green-border); }
+        .proof::before { content: "📐 DERIVATION"; font-weight: bold; color: var(--proof-green-border); display: block; margin-bottom: 10px; }
+        
+        .result { background: var(--result-yellow); border-color: var(--result-yellow-border); }
+        .result::before { content: "⭐ KEY RESULT"; font-weight: bold; color: #B8860B; display: block; margin-bottom: 10px; }
+        
+        .intuition { background: var(--intuition-orange); border-color: var(--intuition-orange-border); }
+        .intuition::before { content: "💡 INTUITION"; font-weight: bold; color: var(--intuition-orange-border); display: block; margin-bottom: 10px; }
+        
+        .assumption { background: var(--assumption-purple); border-color: var(--assumption-purple-border); }
+        .assumption::before { content: "📋 ASSUMPTION"; font-weight: bold; color: var(--assumption-purple-border); display: block; margin-bottom: 10px; }
+        
+        .step { background: white; padding: 15px; margin: 10px 0; border-radius: 5px; border: 1px solid #ddd; }
+        .step-num { background: #3498db; color: white; padding: 2px 10px; border-radius: 15px; font-weight: bold; margin-right: 10px; }
+        .rule { background: #e8f4f8; padding: 3px 8px; border-radius: 5px; font-size: 0.85em; color: #2980b9; display: inline-block; margin: 5px 0; }
+        
+        .vanish { background: var(--vanish-red); padding: 2px 6px; border-radius: 3px; text-decoration: line-through; color: #C00000; }
+        .before { background: var(--before-blue); padding: 2px 6px; border-radius: 3px; }
+        .after { background: var(--after-green); padding: 2px 6px; border-radius: 3px; }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 3px; border: 1px solid #ffc107; }
+        
+        .question { background: linear-gradient(to right, #ffecd2, #fcb69f); padding: 15px; border-radius: 8px; margin: 25px 0; border: 2px solid #e67e22; }
+        .question h3 { color: #c0392b; margin-top: 0; }
+        
+        .legend { background: white; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #ddd; display: flex; flex-wrap: wrap; gap: 10px; }
+        .legend-item { padding: 5px 10px; border-radius: 5px; font-size: 0.9em; }
+        
+        .arrow { font-size: 1.3em; color: #27ae60; margin: 0 8px; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #d9d9d9; }
+    </style>
+</head>
+<body>
+
+<h1>🎓 Causal Inference Study Guide</h1>
+<h2 style="text-align: center; border: none;">Complete Solutions with Derivations (Q1–Q15)</h2>
+
+<div class="legend">
+    <strong>Legend:</strong>
+    <span class="legend-item" style="background: var(--def-blue);">📘 Definition</span>
+    <span class="legend-item" style="background: var(--proof-green);">📐 Derivation</span>
+    <span class="legend-item" style="background: var(--result-yellow);">⭐ Result</span>
+    <span class="legend-item" style="background: var(--intuition-orange);">💡 Intuition</span>
+    <span class="legend-item" style="background: var(--assumption-purple);">📋 Assumption</span>
+    <span class="legend-item" style="background: var(--before-blue);">Before Transform</span>
+    <span class="legend-item" style="background: var(--after-green);">After Transform</span>
+    <span class="legend-item" style="background: var(--vanish-red); text-decoration: line-through;">Vanishes</span>
+</div>
+
+<!-- ============== NOTATION CHEATSHEET ============== -->
+<div class="unit-header">📖 Comprehensive Notation Cheatsheet: Potential Outcomes Framework</div>
+
+<div class="box definition">
+    <strong>The Rubin Causal Model (RCM) — Core Philosophy</strong>
+    <p>The potential outcomes framework (also called the Rubin Causal Model or Neyman-Rubin framework) defines causal effects in terms of <em>counterfactual</em> outcomes: what <em>would</em> happen under different treatment assignments.</p>
+    
+    <p><strong>Central Idea:</strong> Each unit has multiple potential outcomes, one for each possible treatment. Causal effects are <em>comparisons</em> between these potential outcomes.</p>
+    
+    <p><strong>Key Insight:</strong> Causation is defined at the <em>unit level</em>, not through associations in data.</p>
+</div>
+
+<h2>1. Basic Notation — Units, Treatments, and Outcomes</h2>
+
+<div class="box definition">
+    <strong>Index and Population Notation</strong>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Meaning</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td>\(i\)</td>
+            <td>Unit index</td>
+            <td>\(i = 1, 2, \ldots, N\) or \(i = 1, 2, \ldots, n\)</td>
+        </tr>
+        <tr>
+            <td>\(N\)</td>
+            <td>Population size / Sample size</td>
+            <td>Sometimes \(n\) for sample, \(N\) for population</td>
+        </tr>
+        <tr>
+            <td>\(n_1\)</td>
+            <td>Number of treated units</td>
+            <td>\(n_1 = \sum_{i=1}^{N} T_i\)</td>
+        </tr>
+        <tr>
+            <td>\(n_0\)</td>
+            <td>Number of control units</td>
+            <td>\(n_0 = N - n_1 = \sum_{i=1}^{N} (1-T_i)\)</td>
+        </tr>
+    </table>
+</div>
+
+<div class="box definition">
+    <strong>Treatment Notation</strong>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Meaning</th>
+            <th>Values</th>
+        </tr>
+        <tr>
+            <td>\(T_i\)</td>
+            <td>Treatment indicator for unit \(i\)</td>
+            <td>\(T_i \in \{0, 1\}\)</td>
+        </tr>
+        <tr>
+            <td>\(T_i = 1\)</td>
+            <td>Unit \(i\) receives treatment</td>
+            <td>"Treated"</td>
+        </tr>
+        <tr>
+            <td>\(T_i = 0\)</td>
+            <td>Unit \(i\) receives control</td>
+            <td>"Control" or "Untreated"</td>
+        </tr>
+        <tr>
+            <td>\(\mathbf{T}\)</td>
+            <td>Treatment assignment vector</td>
+            <td>\(\mathbf{T} = (T_1, T_2, \ldots, T_N)'\)</td>
+        </tr>
+        <tr>
+            <td>\(\mathbf{T}_{-i}\)</td>
+            <td>Treatments of all units except \(i\)</td>
+            <td>Used in SUTVA discussions</td>
+        </tr>
+    </table>
+    
+    <p><strong>Multi-valued treatments:</strong> \(T_i \in \{0, 1, 2, \ldots, K\}\) or \(T_i \in \mathbb{R}\) (continuous dose)</p>
+</div>
+
+<div class="box definition">
+    <strong>Potential Outcomes — The Core Objects</strong>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Meaning</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>\(Y_i(1)\)</td>
+            <td>Potential outcome under treatment</td>
+            <td>Outcome unit \(i\) <em>would</em> have if treated</td>
+        </tr>
+        <tr>
+            <td>\(Y_i(0)\)</td>
+            <td>Potential outcome under control</td>
+            <td>Outcome unit \(i\) <em>would</em> have if not treated</td>
+        </tr>
+        <tr>
+            <td>\(Y_i(t)\)</td>
+            <td>Potential outcome under treatment \(t\)</td>
+            <td>General notation for treatment level \(t\)</td>
+        </tr>
+        <tr>
+            <td>\(Y_i\) or \(Y_i^{obs}\)</td>
+            <td>Observed outcome</td>
+            <td>The outcome we actually see for unit \(i\)</td>
+        </tr>
+    </table>
+    
+    <p><strong>Key Property:</strong> \(Y_i(1)\) and \(Y_i(0)\) are <em>fixed attributes</em> of unit \(i\) — they exist regardless of which treatment is assigned. Only our ability to <em>observe</em> them depends on \(T_i\).</p>
+</div>
+
+<div class="box result">
+    <strong>The Fundamental Problem of Causal Inference (Holland, 1986)</strong>
+    <p>For any unit \(i\), we observe <em>at most one</em> potential outcome:</p>
+    $$\text{We observe } Y_i(1) \text{ if } T_i = 1, \quad \text{or } Y_i(0) \text{ if } T_i = 0$$
+    $$\text{We NEVER observe both } Y_i(1) \text{ and } Y_i(0) \text{ for the same unit}$$
+    
+    <p><strong>Implication:</strong> Individual treatment effects \(\tau_i = Y_i(1) - Y_i(0)\) are <em>never directly observable</em>.</p>
+</div>
+
+<h2>2. Connecting Potential and Observed Outcomes</h2>
+
+<div class="box assumption">
+    <strong>SUTVA — Stable Unit Treatment Value Assumption</strong>
+    <p>SUTVA has two components:</p>
+    
+    <p><strong>(a) No interference:</strong> Unit \(i\)'s outcome depends only on \(i\)'s treatment, not on others' treatments.</p>
+    $$Y_i(T_i, \mathbf{T}_{-i}) = Y_i(T_i) \quad \text{for all } \mathbf{T}_{-i}$$
+    
+    <p><strong>(b) No hidden versions of treatment:</strong> There is only one version of each treatment level.</p>
+    $$T_i = T_j = t \implies \text{same treatment experienced}$$
+    
+    <p><strong>Violations:</strong></p>
+    <ul>
+        <li><em>Interference:</em> Vaccines (herd immunity), classroom interventions (peer effects)</li>
+        <li><em>Hidden versions:</em> "Treatment" varies in intensity, timing, or implementation</li>
+    </ul>
+</div>
+
+<div class="box definition">
+    <strong>Consistency Assumption (Observation Rule)</strong>
+    <p>The observed outcome equals the potential outcome corresponding to the treatment received:</p>
+    $$Y_i = Y_i(T_i) = T_i \cdot Y_i(1) + (1-T_i) \cdot Y_i(0)$$
+    
+    <p><strong>Equivalent expressions:</strong></p>
+    $$Y_i = \begin{cases} Y_i(1) & \text{if } T_i = 1 \\ Y_i(0) & \text{if } T_i = 0 \end{cases}$$
+    
+    <p><strong>Useful algebraic identities:</strong></p>
+    <table>
+        <tr>
+            <th>Identity</th>
+            <th>Derivation</th>
+        </tr>
+        <tr>
+            <td>\(Y_i T_i = Y_i(1) T_i\)</td>
+            <td>When \(T_i=1\): \(Y_i = Y_i(1)\); when \(T_i=0\): both sides are 0</td>
+        </tr>
+        <tr>
+            <td>\(Y_i (1-T_i) = Y_i(0)(1-T_i)\)</td>
+            <td>When \(T_i=0\): \(Y_i = Y_i(0)\); when \(T_i=1\): both sides are 0</td>
+        </tr>
+        <tr>
+            <td>\(T_i^2 = T_i\)</td>
+            <td>Binary indicator property: \(0^2 = 0\), \(1^2 = 1\)</td>
+        </tr>
+        <tr>
+            <td>\(T_i(1-T_i) = 0\)</td>
+            <td>Product is 0 for both \(T_i = 0\) and \(T_i = 1\)</td>
+        </tr>
+    </table>
+</div>
+
+<h2>3. Causal Estimands — What We Want to Estimate</h2>
+
+<div class="box definition">
+    <strong>Unit-Level Treatment Effect</strong>
+    $$\tau_i = Y_i(1) - Y_i(0)$$
+    <p>The causal effect of treatment for unit \(i\). <span style="color: red;">Never directly observed.</span></p>
+</div>
+
+<div class="box definition">
+    <strong>Population-Level Estimands</strong>
+    <table>
+        <tr>
+            <th>Estimand</th>
+            <th>Definition</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><strong>SATE</strong><br>(Sample ATE)</td>
+            <td>$$\tau_{SATE} = \frac{1}{N}\sum_{i=1}^{N}[Y_i(1) - Y_i(0)]$$</td>
+            <td>Average effect in the sample</td>
+        </tr>
+        <tr>
+            <td><strong>PATE</strong><br>(Population ATE)</td>
+            <td>$$\tau_{PATE} = E[Y_i(1) - Y_i(0)]$$</td>
+            <td>Average effect in the population</td>
+        </tr>
+        <tr>
+            <td><strong>ATT</strong><br>(ATE on Treated)</td>
+            <td>$$\tau_{ATT} = E[Y_i(1) - Y_i(0) | T_i = 1]$$</td>
+            <td>Average effect for those who were treated</td>
+        </tr>
+        <tr>
+            <td><strong>ATC</strong><br>(ATE on Control)</td>
+            <td>$$\tau_{ATC} = E[Y_i(1) - Y_i(0) | T_i = 0]$$</td>
+            <td>Average effect for those who were not treated</td>
+        </tr>
+        <tr>
+            <td><strong>CATE</strong><br>(Conditional ATE)</td>
+            <td>$$\tau(x) = E[Y_i(1) - Y_i(0) | X_i = x]$$</td>
+            <td>Average effect for subgroup with \(X_i = x\)</td>
+        </tr>
+        <tr>
+            <td><strong>LATE</strong><br>(Local ATE)</td>
+            <td>$$\tau_{LATE} = E[Y_i(1) - Y_i(0) | \text{Complier}]$$</td>
+            <td>Average effect for compliers (IV setting)</td>
+        </tr>
+    </table>
+</div>
+
+<div class="box result">
+    <strong>Relationships Between Estimands</strong>
+    $$\tau_{ATE} = \pi \cdot \tau_{ATT} + (1-\pi) \cdot \tau_{ATC}$$
+    <p>where \(\pi = P(T_i = 1)\) is the proportion treated.</p>
+    
+    $$\tau_{ATE} = E_X[\tau(X)]$$
+    <p>ATE is the average of CATE over the covariate distribution.</p>
+    
+    <p><strong>When are they equal?</strong></p>
+    <ul>
+        <li>\(\tau_{ATT} = \tau_{ATC} = \tau_{ATE}\) when treatment effects are <em>homogeneous</em></li>
+        <li>\(\tau_{SATE} = \tau_{PATE}\) (in expectation) when sample is random from population</li>
+    </ul>
+</div>
+
+<h2>4. Assignment Mechanisms and Identification</h2>
+
+<div class="box definition">
+    <strong>Assignment Mechanism Notation</strong>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Meaning</th>
+            <th>Definition</th>
+        </tr>
+        <tr>
+            <td>\(\pi_i\)</td>
+            <td>Propensity score for unit \(i\)</td>
+            <td>\(\pi_i = P(T_i = 1 | X_i)\)</td>
+        </tr>
+        <tr>
+            <td>\(e(X_i)\)</td>
+            <td>Propensity score function</td>
+            <td>\(e(x) = P(T_i = 1 | X_i = x)\)</td>
+        </tr>
+        <tr>
+            <td>\(P(\mathbf{T} | \mathbf{X}, \mathbf{Y}(0), \mathbf{Y}(1))\)</td>
+            <td>Assignment mechanism</td>
+            <td>Probability distribution over treatment vectors</td>
+        </tr>
+    </table>
+</div>
+
+<div class="box assumption">
+    <strong>Key Identification Assumptions</strong>
+    
+    <p><strong>1. Random Assignment:</strong></p>
+    $$T_i \perp \{Y_i(1), Y_i(0)\}$$
+    <p>Treatment is independent of potential outcomes. Achieved by randomization.</p>
+    
+    <p><strong>2. Unconfoundedness (Conditional Independence):</strong></p>
+    $$T_i \perp \{Y_i(1), Y_i(0)\} \mid X_i$$
+    <p>Treatment is independent of potential outcomes <em>given</em> observed covariates.</p>
+    
+    <p><strong>3. Overlap (Positivity / Common Support):</strong></p>
+    $$0 < P(T_i = 1 | X_i) < 1 \quad \text{for all } X_i$$
+    <p>Every unit has positive probability of each treatment.</p>
+    
+    <p><strong>4. Strong Ignorability:</strong></p>
+    $$\text{Unconfoundedness} + \text{Overlap}$$
+    <p>Both conditions together enable identification of causal effects.</p>
+</div>
+
+<h2>5. Estimators and Their Properties</h2>
+
+<div class="box definition">
+    <strong>Common Estimator Notation</strong>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Definition</th>
+            <th>Name</th>
+        </tr>
+        <tr>
+            <td>\(\bar{Y}_1\)</td>
+            <td>\(\frac{1}{n_1}\sum_{i:T_i=1} Y_i\)</td>
+            <td>Sample mean of treated outcomes</td>
+        </tr>
+        <tr>
+            <td>\(\bar{Y}_0\)</td>
+            <td>\(\frac{1}{n_0}\sum_{i:T_i=0} Y_i\)</td>
+            <td>Sample mean of control outcomes</td>
+        </tr>
+        <tr>
+            <td>\(\hat{\tau}\)</td>
+            <td>\(\bar{Y}_1 - \bar{Y}_0\)</td>
+            <td>Difference-in-means estimator</td>
+        </tr>
+        <tr>
+            <td>\(\hat{\tau}_{IPW}\)</td>
+            <td>\(\frac{1}{n}\sum_i \left[\frac{T_i Y_i}{e(X_i)} - \frac{(1-T_i)Y_i}{1-e(X_i)}\right]\)</td>
+            <td>IPW estimator</td>
+        </tr>
+        <tr>
+            <td>\(s_1^2, s_0^2\)</td>
+            <td>Sample variances in each group</td>
+            <td>Used for standard errors</td>
+        </tr>
+    </table>
+</div>
+
+<div class="box definition">
+    <strong>Estimator Properties</strong>
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Definition</th>
+            <th>Meaning</th>
+        </tr>
+        <tr>
+            <td><strong>Unbiased</strong></td>
+            <td>\(E[\hat{\tau}] = \tau\)</td>
+            <td>Correct on average</td>
+        </tr>
+        <tr>
+            <td><strong>Consistent</strong></td>
+            <td>\(\hat{\tau} \xrightarrow{p} \tau\) as \(n \to \infty\)</td>
+            <td>Converges to truth</td>
+        </tr>
+        <tr>
+            <td><strong>Efficient</strong></td>
+            <td>Achieves Cramér-Rao lower bound</td>
+            <td>Minimum variance among unbiased estimators</td>
+        </tr>
+        <tr>
+            <td><strong>\(\sqrt{n}\)-consistent</strong></td>
+            <td>\(\sqrt{n}(\hat{\tau} - \tau) = O_p(1)\)</td>
+            <td>Standard parametric rate</td>
+        </tr>
+    </table>
+</div>
+
+<h2>6. Extended Settings — Panel Data, IV, and More</h2>
+
+<div class="box definition">
+    <strong>Panel / Longitudinal Data Notation</strong>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Meaning</th>
+            <th>Context</th>
+        </tr>
+        <tr>
+            <td>\(Y_{it}\)</td>
+            <td>Outcome for unit \(i\) at time \(t\)</td>
+            <td>Observed outcome</td>
+        </tr>
+        <tr>
+            <td>\(Y_{it}(d)\)</td>
+            <td>Potential outcome at time \(t\) under treatment \(d\)</td>
+            <td>DiD setting</td>
+        </tr>
+        <tr>
+            <td>\(t = 0\)</td>
+            <td>Pre-treatment period</td>
+            <td>"Before"</td>
+        </tr>
+        <tr>
+            <td>\(t = 1\)</td>
+            <td>Post-treatment period</td>
+            <td>"After"</td>
+        </tr>
+        <tr>
+            <td>\(D_i\)</td>
+            <td>Treatment group indicator</td>
+            <td>\(D_i = 1\) if ever treated</td>
+        </tr>
+        <tr>
+            <td>\(\Delta Y_i\)</td>
+            <td>\(Y_{i1} - Y_{i0}\)</td>
+            <td>First difference</td>
+        </tr>
+    </table>
+    
+    <p><strong>Parallel Trends (DiD):</strong></p>
+    $$E[Y_{i1}(0) - Y_{i0}(0) | D_i = 1] = E[Y_{i1}(0) - Y_{i0}(0) | D_i = 0]$$
+</div>
+
+<div class="box definition">
+    <strong>Instrumental Variables Notation</strong>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Meaning</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>\(Z_i\)</td>
+            <td>Instrument</td>
+            <td>Exogenous source of variation in \(T_i\)</td>
+        </tr>
+        <tr>
+            <td>\(T_i(z)\)</td>
+            <td>Potential treatment under instrument \(z\)</td>
+            <td>Would unit \(i\) take treatment if \(Z_i = z\)?</td>
+        </tr>
+        <tr>
+            <td>\(Y_i(t, z)\)</td>
+            <td>Potential outcome</td>
+            <td>Outcome under treatment \(t\) and instrument \(z\)</td>
+        </tr>
+        <tr>
+            <td>\(Y_i(t)\)</td>
+            <td>Potential outcome (exclusion)</td>
+            <td>Under exclusion: \(Y_i(t,z) = Y_i(t)\)</td>
+        </tr>
+    </table>
+    
+    <p><strong>Compliance Types:</strong></p>
+    <table>
+        <tr>
+            <th>Type</th>
+            <th>\(T_i(0)\)</th>
+            <th>\(T_i(1)\)</th>
+            <th>Definition</th>
+        </tr>
+        <tr>
+            <td>Complier</td>
+            <td>0</td>
+            <td>1</td>
+            <td>\(T_i(1) > T_i(0)\)</td>
+        </tr>
+        <tr>
+            <td>Always-taker</td>
+            <td>1</td>
+            <td>1</td>
+            <td>\(T_i(1) = T_i(0) = 1\)</td>
+        </tr>
+        <tr>
+            <td>Never-taker</td>
+            <td>0</td>
+            <td>0</td>
+            <td>\(T_i(1) = T_i(0) = 0\)</td>
+        </tr>
+        <tr>
+            <td>Defier</td>
+            <td>1</td>
+            <td>0</td>
+            <td>\(T_i(1) < T_i(0)\)</td>
+        </tr>
+    </table>
+</div>
+
+<h2>7. Statistical Independence Notation</h2>
+
+<div class="box definition">
+    <strong>Independence Symbols and Meanings</strong>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Meaning</th>
+            <th>Example</th>
+        </tr>
+        <tr>
+            <td>\(A \perp B\)</td>
+            <td>\(A\) is independent of \(B\)</td>
+            <td>\(T_i \perp Y_i(0)\)</td>
+        </tr>
+        <tr>
+            <td>\(A \perp B \mid C\)</td>
+            <td>\(A\) is independent of \(B\) given \(C\)</td>
+            <td>\(T_i \perp Y_i(0) \mid X_i\)</td>
+        </tr>
+        <tr>
+            <td>\(A \not\perp B\)</td>
+            <td>\(A\) is NOT independent of \(B\)</td>
+            <td>Dependence / confounding</td>
+        </tr>
+        <tr>
+            <td>\(\{A, B\} \perp C\)</td>
+            <td>Joint independence</td>
+            <td>\(\{Y_i(1), Y_i(0)\} \perp T_i\)</td>
+        </tr>
+    </table>
+    
+    <p><strong>Key Independence Results:</strong></p>
+    <ul>
+        <li>\(T_i \perp Y_i(1), Y_i(0)\) implies \(E[Y_i(1)|T_i=1] = E[Y_i(1)]\)</li>
+        <li>\(T_i \perp Y_i(1), Y_i(0) | X_i\) implies \(E[Y_i(1)|T_i=1, X_i] = E[Y_i(1)|X_i]\)</li>
+    </ul>
+</div>
+
+<h2>8. Expectation and Variance Notation</h2>
+
+<div class="box definition">
+    <strong>Expectations Over Different Sources of Randomness</strong>
+    <table>
+        <tr>
+            <th>Notation</th>
+            <th>Meaning</th>
+            <th>Randomness Source</th>
+        </tr>
+        <tr>
+            <td>\(E[\cdot]\)</td>
+            <td>Expectation (generic)</td>
+            <td>Context-dependent</td>
+        </tr>
+        <tr>
+            <td>\(E_T[\cdot]\)</td>
+            <td>Expectation over treatment assignment</td>
+            <td>Randomization distribution</td>
+        </tr>
+        <tr>
+            <td>\(E_S[\cdot]\)</td>
+            <td>Expectation over sampling</td>
+            <td>Population sampling</td>
+        </tr>
+        <tr>
+            <td>\(E[\cdot | X_i]\)</td>
+            <td>Conditional expectation</td>
+            <td>Given covariates</td>
+        </tr>
+        <tr>
+            <td>\(E[\cdot | T_i = 1]\)</td>
+            <td>Conditional on treatment</td>
+            <td>Among treated</td>
+        </tr>
+    </table>
+    
+    <p><strong>Law of Iterated Expectations:</strong></p>
+    $$E[Y] = E[E[Y|X]] = E_X[E[Y|X]]$$
+    
+    <p><strong>Law of Total Variance:</strong></p>
+    $$Var(Y) = E[Var(Y|X)] + Var(E[Y|X])$$
+</div>
+
+<div class="box definition">
+    <strong>Variance and Covariance Notation</strong>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Definition</th>
+        </tr>
+        <tr>
+            <td>\(Var(\hat{\tau})\)</td>
+            <td>\(E[(\hat{\tau} - E[\hat{\tau}])^2]\)</td>
+        </tr>
+        <tr>
+            <td>\(SE(\hat{\tau})\)</td>
+            <td>\(\sqrt{Var(\hat{\tau})}\) — standard error</td>
+        </tr>
+        <tr>
+            <td>\(\widehat{Var}(\hat{\tau})\)</td>
+            <td>Estimated variance</td>
+        </tr>
+        <tr>
+            <td>\(Cov(A, B)\)</td>
+            <td>\(E[(A - E[A])(B - E[B])]\)</td>
+        </tr>
+        <tr>
+            <td>\(S^2_1, S^2_0\)</td>
+            <td>Population variances of \(Y(1), Y(0)\)</td>
+        </tr>
+        <tr>
+            <td>\(s^2_1, s^2_0\)</td>
+            <td>Sample variances in treated/control</td>
+        </tr>
+    </table>
+</div>
+
+<h2>9. Quick Reference Card</h2>
+
+<div class="box result">
+    <strong>Essential Formulas — At a Glance</strong>
+    
+    <table>
+        <tr>
+            <th>Concept</th>
+            <th>Formula</th>
+        </tr>
+        <tr>
+            <td>Consistency</td>
+            <td>\(Y_i = T_i Y_i(1) + (1-T_i) Y_i(0)\)</td>
+        </tr>
+        <tr>
+            <td>Individual effect</td>
+            <td>\(\tau_i = Y_i(1) - Y_i(0)\)</td>
+        </tr>
+        <tr>
+            <td>ATE</td>
+            <td>\(\tau = E[Y_i(1) - Y_i(0)]\)</td>
+        </tr>
+        <tr>
+            <td>ATT</td>
+            <td>\(\tau_{ATT} = E[Y_i(1) - Y_i(0) | T_i = 1]\)</td>
+        </tr>
+        <tr>
+            <td>CATE</td>
+            <td>\(\tau(x) = E[Y_i(1) - Y_i(0) | X_i = x]\)</td>
+        </tr>
+        <tr>
+            <td>Diff-in-means</td>
+            <td>\(\hat{\tau} = \bar{Y}_1 - \bar{Y}_0\)</td>
+        </tr>
+        <tr>
+            <td>IPW (treated)</td>
+            <td>\(E[Y(1)] = E\left[\frac{T_i Y_i}{e(X_i)}\right]\)</td>
+        </tr>
+        <tr>
+            <td>DiD</td>
+            <td>\(\hat{\tau}_{DiD} = (\bar{Y}_{11} - \bar{Y}_{10}) - (\bar{Y}_{01} - \bar{Y}_{00})\)</td>
+        </tr>
+        <tr>
+            <td>LATE / Wald</td>
+            <td>\(\hat{\tau}_{LATE} = \frac{\bar{Y}_{Z=1} - \bar{Y}_{Z=0}}{\bar{T}_{Z=1} - \bar{T}_{Z=0}}\)</td>
+        </tr>
+        <tr>
+            <td>Propensity score</td>
+            <td>\(e(x) = P(T_i = 1 | X_i = x)\)</td>
+        </tr>
+    </table>
+</div>
+
+<div class="box intuition">
+    <strong>Common Notation Pitfalls to Avoid</strong>
+    <ul>
+        <li><strong>Confusing \(Y_i\) and \(Y_i(t)\):</strong> \(Y_i\) is observed; \(Y_i(t)\) is a potential outcome</li>
+        <li><strong>Forgetting conditioning:</strong> \(E[Y|T=1] \neq E[Y(1)]\) unless unconfounded</li>
+        <li><strong>LATE ≠ ATE:</strong> LATE is for compliers only</li>
+        <li><strong>ATT ≠ ATE:</strong> Unless effects are homogeneous</li>
+        <li><strong>Estimated vs. true propensity:</strong> \(\hat{e}(X)\) vs. \(e(X)\)</li>
+    </ul>
+</div>
+
+<hr style="margin: 40px 0;">
+
+<!-- ============== UNIT 1 ============== -->
+<div class="unit-header">✨ Unit 1 — Foundations: Potential Outcomes, Expectations, Randomization</div>
+
+<!-- Q1 -->
+<div class="question">
+    <h3>Q1. Defining Causal Effects</h3>
+    <p>Let \(Y_i(1)\) and \(Y_i(0)\) denote unit \(i\)'s potential outcomes under treatment and control. Define the <strong>sample average treatment effect (SATE)</strong> and <strong>population average treatment effect (PATE)</strong>.</p>
+</div>
+
+<div class="box definition">
+    <strong>Potential Outcomes Framework (Rubin Causal Model)</strong><br>
+    For each unit \(i\):
+    <ul>
+        <li>\(Y_i(1)\) = outcome if unit \(i\) receives treatment</li>
+        <li>\(Y_i(0)\) = outcome if unit \(i\) receives control</li>
+        <li><strong>Individual Treatment Effect:</strong> \(\tau_i = Y_i(1) - Y_i(0)\)</li>
+    </ul>
+    <em>Fundamental Problem of Causal Inference:</em> We can never observe both \(Y_i(1)\) and \(Y_i(0)\) for the same unit.
+</div>
+
+<div class="box result">
+    <strong>Sample Average Treatment Effect (SATE):</strong>
+    $$\tau_{\text{SATE}} = \frac{1}{N} \sum_{i=1}^{N} \left[ Y_i(1) - Y_i(0) \right]$$
+    <p>This is the average treatment effect for the \(N\) units <em>in our sample</em>.</p>
+    
+    <strong>Population Average Treatment Effect (PATE):</strong>
+    $$\tau_{\text{PATE}} = E\left[ Y_i(1) - Y_i(0) \right]$$
+    <p>This is the expected treatment effect across the <em>entire population</em> from which our sample is drawn.</p>
+</div>
+
+<div class="box intuition">
+    <strong>Key Distinction:</strong>
+    <ul>
+        <li><strong>SATE</strong> is a <em>fixed quantity</em> for a given sample — no probability involved once the sample is drawn</li>
+        <li><strong>PATE</strong> involves an <em>expectation over the population</em> — it's what we'd get if we could measure treatment effects for everyone</li>
+        <li>If sample is randomly drawn from population: \(E[\tau_{\text{SATE}}] = \tau_{\text{PATE}}\)</li>
+    </ul>
+</div>
+
+<!-- Q2 -->
+<div class="question">
+    <h3>Q2. Expectation of the Difference-in-Means</h3>
+    <p>Show that, under random assignment with \(n_1\) treated and \(n_0\) control units, the estimator
+    $$\hat{\tau} = \frac{1}{n_1} \sum_{T_i=1} Y_i - \frac{1}{n_0} \sum_{T_i=0} Y_i$$
+    is <strong>unbiased</strong> for the SATE: \(\frac{1}{N} \sum_{i=1}^{N} [Y_i(1) - Y_i(0)]\)</p>
+</div>
+
+<div class="box assumption">
+    <strong>Setup:</strong>
+    <ul>
+        <li>\(N\) total units, \(n_1\) assigned to treatment, \(n_0 = N - n_1\) to control</li>
+        <li>\(T_i \in \{0,1\}\) is the treatment indicator</li>
+        <li><strong>Consistency:</strong> \(Y_i = T_i \cdot Y_i(1) + (1-T_i) \cdot Y_i(0)\)</li>
+        <li><strong>Random Assignment:</strong> Treatment assignment is independent of potential outcomes</li>
+    </ul>
+</div>
+
+<div class="box proof">
+    <div class="step">
+        <span class="step-num">1</span> <strong>Express observed outcomes using consistency</strong><br>
+        <span class="rule">Rule: Consistency Assumption</span>
+        $$Y_i = T_i \cdot Y_i(1) + (1-T_i) \cdot Y_i(0)$$
+        For treated units (\(T_i = 1\)): \(Y_i = Y_i(1)\)<br>
+        For control units (\(T_i = 0\)): \(Y_i = Y_i(0)\)
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Write the estimator in terms of potential outcomes</strong><br>
+        <span class="rule">Rule: Substitution</span>
+        $$\hat{\tau} = \underbrace{\frac{1}{n_1} \sum_{T_i=1} Y_i(1)}_{\bar{Y}_1^{obs}} - \underbrace{\frac{1}{n_0} \sum_{T_i=0} Y_i(0)}_{\bar{Y}_0^{obs}}$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Take expectation over random assignment</strong><br>
+        <span class="rule">Rule: Linearity of Expectation</span>
+        $$E[\hat{\tau}] = E\left[\frac{1}{n_1} \sum_{T_i=1} Y_i(1)\right] - E\left[\frac{1}{n_0} \sum_{T_i=0} Y_i(0)\right]$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Apply random assignment property</strong><br>
+        <span class="rule">Rule: Under random assignment, each unit equally likely to be treated</span>
+        <p>Under complete random assignment, the treated group is a random sample of size \(n_1\) from all \(N\) units.</p>
+        <p>Expected value of sample mean of \(Y_i(1)\) from treated units:</p>
+        $$E\left[\frac{1}{n_1} \sum_{T_i=1} Y_i(1)\right] = \frac{1}{N}\sum_{i=1}^{N} Y_i(1) = \bar{Y}(1)$$
+        <p>Similarly for control:</p>
+        $$E\left[\frac{1}{n_0} \sum_{T_i=0} Y_i(0)\right] = \frac{1}{N}\sum_{i=1}^{N} Y_i(0) = \bar{Y}(0)$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">5</span> <strong>Combine results</strong><br>
+        <span class="rule">Rule: Definition of SATE</span>
+        $$E[\hat{\tau}] = \bar{Y}(1) - \bar{Y}(0) = \frac{1}{N}\sum_{i=1}^{N} Y_i(1) - \frac{1}{N}\sum_{i=1}^{N} Y_i(0) = \frac{1}{N}\sum_{i=1}^{N} [Y_i(1) - Y_i(0)]$$
+    </div>
+</div>
+
+<div class="box result">
+    $$E[\hat{\tau}] = \tau_{\text{SATE}} = \frac{1}{N}\sum_{i=1}^{N} [Y_i(1) - Y_i(0)]$$
+    <p>The difference-in-means estimator is <strong>unbiased</strong> for the SATE under random assignment.</p>
+</div>
+
+<div class="box intuition">
+    <strong>Why unbiased?</strong> Random assignment ensures that:
+    <ul>
+        <li>The treated group is, <em>on average</em>, representative of the full sample for \(Y(1)\)</li>
+        <li>The control group is, <em>on average</em>, representative of the full sample for \(Y(0)\)</li>
+        <li>No systematic differences between groups → no selection bias</li>
+    </ul>
+</div>
+
+<!-- Q3 -->
+<div class="question">
+    <h3>Q3. Treatment Indicators</h3>
+    <p>Given treatment indicator \(T_i \in \{0,1\}\) and the consistency assumption, show that \(Y_i T_i = Y_i(1) T_i\).</p>
+    <p>Use this to prove: \(E[Y_i(1)] = \frac{E[Y_i T_i]}{E[T_i]}\)</p>
+</div>
+
+<div class="box proof">
+    <strong>Part 1: Show \(Y_i T_i = Y_i(1) T_i\)</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Start with consistency assumption</strong><br>
+        <span class="rule">Rule: Consistency (SUTVA)</span>
+        $$Y_i = T_i \cdot Y_i(1) + (1 - T_i) \cdot Y_i(0)$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Multiply both sides by \(T_i\)</strong><br>
+        <span class="rule">Rule: Algebraic manipulation</span>
+        $$Y_i T_i = T_i \cdot [T_i \cdot Y_i(1) + (1-T_i) \cdot Y_i(0)]$$
+        $$Y_i T_i = T_i^2 \cdot Y_i(1) + T_i(1-T_i) \cdot Y_i(0)$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Use \(T_i \in \{0,1\}\) properties</strong><br>
+        <span class="rule">Rule: For binary \(T_i\): \(T_i^2 = T_i\) and \(T_i(1-T_i) = 0\)</span>
+        <p>
+            <span class="before">\(T_i^2 \cdot Y_i(1)\)</span> <span class="arrow">→</span> <span class="after">\(T_i \cdot Y_i(1)\)</span>
+        </p>
+        <p>
+            <span class="before">\(T_i(1-T_i) \cdot Y_i(0)\)</span> <span class="arrow">→</span> <span class="vanish">\(0\)</span>
+        </p>
+        $$Y_i T_i = T_i \cdot Y_i(1) + 0 = Y_i(1) T_i \quad \checkmark$$
+    </div>
+</div>
+
+<div class="box proof">
+    <strong>Part 2: Prove \(E[Y_i(1)] = \frac{E[Y_i T_i]}{E[T_i]}\)</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Use result from Part 1</strong><br>
+        <span class="rule">Rule: Substitution</span>
+        $$E[Y_i T_i] = E[Y_i(1) T_i]$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Apply independence under random assignment</strong><br>
+        <span class="rule">Rule: \(Y_i(1) \perp T_i\) under randomization</span>
+        $$E[Y_i(1) T_i] = E[Y_i(1)] \cdot E[T_i]$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Solve for \(E[Y_i(1)]\)</strong><br>
+        <span class="rule">Rule: Algebraic rearrangement</span>
+        $$E[Y_i(1)] = \frac{E[Y_i(1) T_i]}{E[T_i]} = \frac{E[Y_i T_i]}{E[T_i]}$$
+    </div>
+</div>
+
+<div class="box result">
+    $$\boxed{Y_i T_i = Y_i(1) T_i}$$
+    $$\boxed{E[Y_i(1)] = \frac{E[Y_i T_i]}{E[T_i]}}$$
+</div>
+
+<div class="box intuition">
+    <strong>Interpretation:</strong>
+    <ul>
+        <li>\(E[Y_i T_i]\) is the expected value of outcome × treatment indicator (only non-zero for treated)</li>
+        <li>\(E[T_i] = P(T_i = 1) = \pi\) is the probability of treatment</li>
+        <li>Dividing "rescales" to account for only seeing \(Y_i(1)\) among treated units</li>
+    </ul>
+</div>
+
+<!-- Q4 -->
+<div class="question">
+    <h3>Q4. Equal Assignment Probability</h3>
+    <p>If \(P(T_i = 1) = \pi_i = n_1/n\), show that:
+    $$E[Y_i(1)] = \frac{1}{n_1} \sum_i Y_i T_i = \frac{1}{n_1} \sum_{T_i=1} Y_i$$</p>
+</div>
+
+<div class="box assumption">
+    <strong>Setting:</strong> Complete random assignment where exactly \(n_1\) of \(n\) units are treated.
+    <ul>
+        <li>Each unit has probability \(\pi = n_1/n\) of being treated</li>
+        <li>\(E[T_i] = \pi = n_1/n\) for all \(i\)</li>
+    </ul>
+</div>
+
+<div class="box proof">
+    <div class="step">
+        <span class="step-num">1</span> <strong>Start with the result from Q3</strong><br>
+        <span class="rule">Rule: Previous result</span>
+        $$E[Y_i(1)] = \frac{E[Y_i T_i]}{E[T_i]}$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Express expectations as sample averages</strong><br>
+        <span class="rule">Rule: Sample analog of expectation</span>
+        $$E[Y_i T_i] \approx \frac{1}{n} \sum_{i=1}^{n} Y_i T_i$$
+        $$E[T_i] = \frac{n_1}{n}$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Substitute and simplify</strong><br>
+        <span class="rule">Rule: Algebraic manipulation</span>
+        $$E[Y_i(1)] = \frac{\frac{1}{n} \sum_i Y_i T_i}{\frac{n_1}{n}} = \frac{1}{n} \sum_i Y_i T_i \cdot \frac{n}{n_1} = \frac{1}{n_1} \sum_i Y_i T_i$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Note that \(Y_i T_i = 0\) when \(T_i = 0\)</strong><br>
+        <span class="rule">Rule: Property of indicator multiplication</span>
+        $$\frac{1}{n_1} \sum_i Y_i T_i = \frac{1}{n_1} \sum_{T_i=1} Y_i$$
+        <p>Only treated units contribute to the sum.</p>
+    </div>
+</div>
+
+<div class="box result">
+    $$\boxed{E[Y_i(1)] = \frac{1}{n_1} \sum_{T_i=1} Y_i = \bar{Y}_1}$$
+    <p>The sample mean of treated outcomes is an unbiased estimator of \(E[Y_i(1)]\).</p>
+</div>
+
+<!-- Q5 (implied from document - Variance derivation) -->
+<div class="question">
+    <h3>Q5. Variance of Difference-in-Means & Covariance</h3>
+    <p>Derive \(Var(\hat{\tau})\) under complete random assignment. Why does \(Cov(\bar{Y}_1, \bar{Y}_0)\) vanish when assignment is random?</p>
+</div>
+
+<div class="box proof">
+    <strong>Variance Derivation:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Write variance of difference</strong><br>
+        <span class="rule">Rule: Variance of difference</span>
+        $$Var(\hat{\tau}) = Var(\bar{Y}_1 - \bar{Y}_0) = Var(\bar{Y}_1) + Var(\bar{Y}_0) - 2Cov(\bar{Y}_1, \bar{Y}_0)$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Variance of treated mean</strong><br>
+        <span class="rule">Rule: Sampling variance (finite population)</span>
+        $$Var(\bar{Y}_1) = \frac{S_1^2}{n_1} \cdot \frac{N - n_1}{N - 1}$$
+        where \(S_1^2 = \frac{1}{N-1}\sum_{i=1}^{N}(Y_i(1) - \bar{Y}(1))^2\) and \(\frac{N-n_1}{N-1}\) is the finite population correction.
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Similarly for control</strong><br>
+        $$Var(\bar{Y}_0) = \frac{S_0^2}{n_0} \cdot \frac{N - n_0}{N - 1}$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Covariance term under random assignment</strong><br>
+        <span class="rule">Rule: Independence from random assignment</span>
+        <p>Under <strong>complete random assignment</strong>, the sets of units assigned to treatment and control are determined randomly, but they are <em>complementary</em> (if unit \(i\) is treated, it's not in control).</p>
+        
+        <p>However, for the <em>potential outcomes</em> \(Y_i(1)\) and \(Y_i(0)\), which are fixed quantities:</p>
+        $$Cov(\bar{Y}_1, \bar{Y}_0) = -\frac{S_{01}}{N-1}$$
+        where \(S_{01}\) is the covariance of potential outcomes.
+    </div>
+</div>
+
+<div class="box result">
+    <strong>Neyman Variance Formula:</strong>
+    $$Var(\hat{\tau}) = \frac{S_1^2}{n_1} + \frac{S_0^2}{n_0} - \frac{S_{\tau}^2}{N}$$
+    where \(S_{\tau}^2 = \frac{1}{N-1}\sum_{i=1}^{N}(\tau_i - \bar{\tau})^2\) is the variance of individual treatment effects.
+    
+    <p><strong>Conservative estimator</strong> (since \(S_{\tau}^2\) is unobservable):</p>
+    $$\widehat{Var}(\hat{\tau}) = \frac{s_1^2}{n_1} + \frac{s_0^2}{n_0}$$
+</div>
+
+<div class="box intuition">
+    <strong>Why does covariance "vanish" conceptually?</strong>
+    <ul>
+        <li>Random assignment makes treatment status <em>independent</em> of potential outcomes</li>
+        <li>The treated and control group means are computed from <em>non-overlapping</em> random subsets</li>
+        <li>While there's mechanical negative correlation (complementary sets), under randomization this doesn't create bias</li>
+        <li>For <strong>inference purposes</strong>, we treat \(Cov(\bar{Y}_1, \bar{Y}_0) \approx 0\) because we're averaging over randomization distribution</li>
+    </ul>
+</div>
+
+<!-- Q6 -->
+<div class="question">
+    <h3>Q6. Fisherian Inference</h3>
+    <p>Explain how a randomization (permutation) test approximates the <strong>null distribution</strong> of \(\hat{\tau}\). Why is this test "exact" under the sharp null?</p>
+</div>
+
+<div class="box definition">
+    <strong>Sharp Null Hypothesis:</strong>
+    $$H_0: Y_i(1) = Y_i(0) \quad \text{for all } i$$
+    <p>Treatment has <em>exactly zero effect</em> for every unit. This means \(\tau_i = 0\) for all \(i\).</p>
+    
+    <strong>Weak Null (for comparison):</strong>
+    $$H_0: E[Y_i(1) - Y_i(0)] = 0$$
+    <p>Average effect is zero, but individual effects may vary.</p>
+</div>
+
+<div class="box proof">
+    <strong>Randomization Test Procedure:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Compute observed test statistic</strong><br>
+        $$\hat{\tau}_{obs} = \bar{Y}_1^{obs} - \bar{Y}_0^{obs}$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Under sharp null, impute all potential outcomes</strong><br>
+        <span class="rule">Rule: Sharp null implies \(Y_i(1) = Y_i(0) = Y_i^{obs}\)</span>
+        <p>If the null is true, the observed outcome equals both potential outcomes:</p>
+        $$Y_i(1) = Y_i(0) = Y_i^{obs} \quad \forall i$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Generate randomization distribution</strong><br>
+        <span class="rule">Rule: Enumerate or sample from \(\binom{N}{n_1}\) possible assignments</span>
+        <p>For each possible treatment assignment \(\mathbf{T}^{(k)}\):</p>
+        <ul>
+            <li>Compute \(\hat{\tau}^{(k)} = \bar{Y}_1^{(k)} - \bar{Y}_0^{(k)}\)</li>
+            <li>Using the <em>same</em> outcome values (just relabeled by assignment)</li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Compute p-value</strong><br>
+        <span class="rule">Rule: Proportion of permutations as extreme as observed</span>
+        $$p = \frac{\#\{|\hat{\tau}^{(k)}| \geq |\hat{\tau}_{obs}|\}}{\text{Total permutations}}$$
+    </div>
+</div>
+
+<div class="box result">
+    <strong>Why "Exact" Under Sharp Null?</strong>
+    <ul>
+        <li>Under the sharp null, we know <em>all</em> potential outcomes (they equal observed outcomes)</li>
+        <li>The randomization distribution is computed from the <em>actual</em> randomization mechanism</li>
+        <li>No distributional assumptions needed (no normality, no large samples)</li>
+        <li>The p-value is <em>exactly</em> the probability of observing such an extreme statistic under the null</li>
+    </ul>
+    $$P(\text{Type I error}) = \alpha \quad \text{exactly}$$
+</div>
+
+<div class="box intuition">
+    <strong>Key Insight:</strong> Fisher's approach asks: "If treatment had no effect on anyone, how likely is it that random assignment alone would produce a difference as large as we observed?"
+    <p>This is fundamentally different from Neyman's approach (confidence intervals) which focuses on repeated sampling properties.</p>
+</div>
+
+<!-- ============== UNIT 2 ============== -->
+<div class="unit-header">🎯 Unit 2 — Experimental Design & Subgroup Analysis</div>
+
+<!-- Q7 -->
+<div class="question">
+    <h3>Q7. Blocking and Power</h3>
+    <p>How does blocking reduce the variance of \(\hat{\tau}\)?</p>
+</div>
+
+<div class="box definition">
+    <strong>Blocking (Stratified Randomization):</strong>
+    <p>Divide sample into \(B\) homogeneous blocks based on pre-treatment covariates, then randomize <em>within</em> each block.</p>
+    
+    <p>Block-weighted estimator:</p>
+    $$\hat{\tau}_{blocked} = \sum_{b=1}^{B} \frac{N_b}{N} \hat{\tau}_b$$
+    where \(\hat{\tau}_b\) is the within-block difference-in-means.
+</div>
+
+<div class="box proof">
+    <strong>Variance Reduction Derivation:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Variance decomposition (law of total variance)</strong><br>
+        <span class="rule">Rule: \(Var(Y) = E[Var(Y|B)] + Var(E[Y|B])\)</span>
+        $$Var(\hat{\tau}_{simple}) = \underbrace{Var(\hat{\tau}|B)}_{\text{within-block}} + \underbrace{Var_B(E[\hat{\tau}|B])}_{\text{between-block}}$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Blocking eliminates between-block variance</strong><br>
+        <span class="rule">Rule: Randomization within blocks</span>
+        <p>By randomizing within blocks, the between-block variation in treatment assignment is eliminated:</p>
+        $$Var(\hat{\tau}_{blocked}) = \sum_{b=1}^{B} \left(\frac{N_b}{N}\right)^2 Var(\hat{\tau}_b)$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Compare variances</strong><br>
+        <p><span class="before">Simple randomization:</span> Variance includes both within and between-block components</p>
+        <p><span class="after">Blocked randomization:</span> Only within-block variance remains</p>
+        $$Var(\hat{\tau}_{blocked}) \leq Var(\hat{\tau}_{simple})$$
+    </div>
+</div>
+
+<div class="box result">
+    <strong>Variance Reduction:</strong>
+    $$Var(\hat{\tau}_{blocked}) = Var(\hat{\tau}_{simple}) - \underbrace{Var_B(\bar{\tau}_b)}_{\text{removed by blocking}}$$
+    
+    <p>The reduction equals the <strong>between-block variance in treatment effects</strong>.</p>
+</div>
+
+<div class="box intuition">
+    <strong>Why Does Blocking Help?</strong>
+    <ul>
+        <li>Blocking ensures balance on observable characteristics <em>by design</em></li>
+        <li>Reduces the chance of "unlucky" randomizations with imbalanced groups</li>
+        <li>More homogeneous within-block comparisons → lower variance</li>
+        <li><strong>Most effective when:</strong> Blocking variable is highly predictive of outcomes</li>
+    </ul>
+</div>
+
+<!-- Q8 -->
+<div class="question">
+    <h3>Q8. Multiple Testing and Bonferroni</h3>
+    <p>If you test \(k\) hypotheses at significance level 0.05, derive the family-wise error rate (FWER). Show that Bonferroni correction controls this at level 0.05 by using \(\alpha^* = 0.05/k\).</p>
+</div>
+
+<div class="box definition">
+    <strong>Family-Wise Error Rate (FWER):</strong>
+    $$\text{FWER} = P(\text{at least one Type I error among } k \text{ tests})$$
+    <p>Probability of making <em>any</em> false rejection when all nulls are true.</p>
+</div>
+
+<div class="box proof">
+    <strong>FWER Without Correction:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Probability of no Type I error on single test</strong><br>
+        $$P(\text{no error on test } j) = 1 - \alpha = 0.95$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Assuming independent tests</strong><br>
+        <span class="rule">Rule: Independence of test statistics</span>
+        $$P(\text{no errors on all } k \text{ tests}) = (1-\alpha)^k = (0.95)^k$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>FWER by complement rule</strong><br>
+        <span class="rule">Rule: \(P(A) = 1 - P(A^c)\)</span>
+        $$\text{FWER} = 1 - (1-\alpha)^k = 1 - (0.95)^k$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Example values</strong><br>
+        <table>
+            <tr><th>\(k\)</th><th>FWER</th></tr>
+            <tr><td>1</td><td>0.05</td></tr>
+            <tr><td>5</td><td>0.226</td></tr>
+            <tr><td>10</td><td>0.401</td></tr>
+            <tr><td>20</td><td>0.642</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="box proof">
+    <strong>Bonferroni Correction:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Apply union bound</strong><br>
+        <span class="rule">Rule: Boole's Inequality: \(P(\cup A_i) \leq \sum P(A_i)\)</span>
+        $$\text{FWER} = P\left(\bigcup_{j=1}^{k} \{\text{reject } H_j | H_j \text{ true}\}\right) \leq \sum_{j=1}^{k} P(\text{reject } H_j | H_j \text{ true})$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Set each test's significance level</strong><br>
+        <span class="rule">Rule: Choose \(\alpha^* = \alpha/k\)</span>
+        $$\text{FWER} \leq \sum_{j=1}^{k} \alpha^* = k \cdot \frac{\alpha}{k} = \alpha$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Conclusion</strong><br>
+        $$\text{Use } \alpha^* = \frac{0.05}{k} \implies \text{FWER} \leq 0.05$$
+    </div>
+</div>
+
+<div class="box result">
+    $$\boxed{\alpha^*_{Bonferroni} = \frac{\alpha}{k}}$$
+    <p>Guarantees \(\text{FWER} \leq \alpha\) regardless of dependence structure between tests.</p>
+</div>
+
+<div class="box intuition">
+    <strong>Trade-off:</strong> Bonferroni is <em>conservative</em> — it controls FWER but at the cost of reduced power (harder to detect true effects). The correction is exact for independent tests and conservative for dependent tests.
+</div>
+
+<!-- Q9 -->
+<div class="question">
+    <h3>Q9. False Discovery Rate (Benjamini–Hochberg)</h3>
+    <p>Explain the Benjamini–Hochberg algorithm for controlling the expected proportion of false positives. Compare it to Bonferroni in terms of power.</p>
+</div>
+
+<div class="box definition">
+    <strong>False Discovery Rate (FDR):</strong>
+    $$\text{FDR} = E\left[\frac{V}{R} \Big| R > 0\right] \cdot P(R > 0)$$
+    <p>where \(V\) = number of false rejections, \(R\) = total rejections.</p>
+    <p>Expected proportion of rejected hypotheses that are false rejections.</p>
+</div>
+
+<div class="box proof">
+    <strong>Benjamini-Hochberg (BH) Procedure:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Order p-values</strong><br>
+        $$p_{(1)} \leq p_{(2)} \leq \cdots \leq p_{(k)}$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Find threshold</strong><br>
+        <span class="rule">Rule: BH critical values</span>
+        <p>For each \(j\), compare \(p_{(j)}\) to threshold \(\frac{j}{k} \cdot \alpha\)</p>
+        $$\text{Find largest } j \text{ such that } p_{(j)} \leq \frac{j}{k} \cdot \alpha$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Reject hypotheses</strong><br>
+        <p>Reject all \(H_{(1)}, H_{(2)}, \ldots, H_{(j^*)}\) where \(j^*\) is the largest index found above.</p>
+    </div>
+</div>
+
+<div class="box result">
+    <strong>Comparison: Bonferroni vs. Benjamini-Hochberg</strong>
+    <table>
+        <tr>
+            <th>Aspect</th>
+            <th>Bonferroni</th>
+            <th>Benjamini-Hochberg</th>
+        </tr>
+        <tr>
+            <td>Controls</td>
+            <td>FWER</td>
+            <td>FDR</td>
+        </tr>
+        <tr>
+            <td>Threshold</td>
+            <td>\(\alpha/k\) (fixed)</td>
+            <td>\(j\alpha/k\) (adaptive)</td>
+        </tr>
+        <tr>
+            <td>Power</td>
+            <td>Lower</td>
+            <td>Higher</td>
+        </tr>
+        <tr>
+            <td>Conservativeness</td>
+            <td>More conservative</td>
+            <td>Less conservative</td>
+        </tr>
+        <tr>
+            <td>Best for</td>
+            <td>Few tests, need certainty</td>
+            <td>Many tests, exploratory</td>
+        </tr>
+    </table>
+</div>
+
+<div class="box intuition">
+    <strong>When to Use Which?</strong>
+    <ul>
+        <li><strong>Bonferroni:</strong> Clinical trials with few primary outcomes; regulatory settings; when any false positive is costly</li>
+        <li><strong>BH:</strong> Genomics with thousands of tests; exploratory analysis; when some false positives are acceptable</li>
+    </ul>
+</div>
+
+<!-- Q10 -->
+<div class="question">
+    <h3>Q10. Subgroup Discovery and Split Samples</h3>
+    <p>1. Why does using the same data to <em>discover</em> and <em>test</em> subgroups inflate false positives?</p>
+    <p>2. Describe a split-sample procedure to recover valid inference.</p>
+    <p>3. What does it mean for a procedure to be <em>honest</em> (Athey & Wager, 2019)?</p>
+</div>
+
+<div class="box proof">
+    <strong>Part 1: Why Same-Data Discovery Inflates False Positives</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>The data snooping problem</strong><br>
+        <p>When we search for subgroups with large effects:</p>
+        <ul>
+            <li>We're implicitly testing <em>many</em> hypotheses</li>
+            <li>We select subgroups <em>because</em> they show large effects in the data</li>
+            <li>This selection is based on noise as well as signal</li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Selection bias</strong><br>
+        <span class="rule">Rule: Winner's curse / regression to the mean</span>
+        <p>If we discover subgroup \(S\) has the largest \(\hat{\tau}_S\), then:</p>
+        $$E[\hat{\tau}_S | S \text{ selected}] > E[\hat{\tau}_S]$$
+        <p>The selected effect is <em>biased upward</em> because selection was based on the same noisy estimate.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Invalid p-values</strong><br>
+        <p>Standard p-values assume the hypothesis was specified <em>before</em> seeing data. Post-hoc p-values are <span class="vanish">not valid</span>.</p>
+    </div>
+</div>
+
+<div class="box proof">
+    <strong>Part 2: Split-Sample Procedure</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Split data randomly</strong><br>
+        $$\text{Data} = \underbrace{\text{Discovery Set}}_{\text{e.g., 50\%}} \cup \underbrace{\text{Inference Set}}_{\text{e.g., 50\%}}$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Discovery phase (on discovery set only)</strong><br>
+        <ul>
+            <li>Search for interesting subgroups</li>
+            <li>Use any method: CART, LASSO, visual inspection</li>
+            <li>No validity requirements here</li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Inference phase (on inference set only)</strong><br>
+        <ul>
+            <li>Estimate treatment effects for discovered subgroups</li>
+            <li>Compute confidence intervals and p-values</li>
+            <li>These are valid because subgroups were fixed before seeing inference data</li>
+        </ul>
+    </div>
+</div>
+
+<div class="box definition">
+    <strong>Part 3: Honesty (Athey & Wager, 2019)</strong>
+    <p>An estimator is <strong>honest</strong> if:</p>
+    $$\text{Data used to determine } \textit{where to split} \neq \text{Data used to } \textit{estimate effects}$$
+    
+    <p>More formally: The construction of the estimator (e.g., tree structure) is independent of the data used for estimation, conditional on the sample.</p>
+</div>
+
+<div class="box result">
+    <strong>Properties of Honest Estimation:</strong>
+    <ul>
+        <li>Valid confidence intervals with correct coverage</li>
+        <li>Unbiased treatment effect estimates within leaves</li>
+        <li>Asymptotically normal inference</li>
+    </ul>
+</div>
+
+<div class="box intuition">
+    <strong>Key Insight:</strong> Honesty separates the "model selection" problem from the "estimation" problem. By using different data for each, we prevent the optimism bias that comes from using the same data to both find patterns and estimate their magnitude.
+</div>
+
+<!-- ============== UNIT 3 ============== -->
+<div class="unit-header">⏱️ Unit 3 — Difference-in-Differences (DiD)</div>
+
+<!-- Q11 -->
+<div class="question">
+    <h3>Q11. Potential Outcomes in DiD</h3>
+    <p><strong>Part 1 - Identification:</strong> Assume \(Y_{it}(T)\) for observation \(i\) at time \(t \in \{0,1\}\) and treatment \(T \in \{0,1\}\). Give the parallel trends assumption and show the ATT identification.</p>
+    <p><strong>Part 2 - Estimation:</strong> Show that in \(Y_i = \beta_0 + \beta_1 t_i + \beta_2 T_i + \beta_3(T_i \times t_i) + u_i\), the coefficient \(\beta_3\) is the DiD estimator.</p>
+</div>
+
+<div class="box assumption">
+    <strong>Notation:</strong>
+    <ul>
+        <li>\(Y_{it}(T)\) = potential outcome for unit \(i\) at time \(t\) under treatment status \(T\)</li>
+        <li>\(t = 0\): pre-treatment period; \(t = 1\): post-treatment period</li>
+        <li>\(T_i = 1\): treatment group; \(T_i = 0\): control group</li>
+        <li>Treatment only affects treated group in post period</li>
+    </ul>
+</div>
+
+<div class="box assumption">
+    <strong>Parallel Trends Assumption:</strong>
+    $$E[Y_{i1}(0) - Y_{i0}(0) | T_i = 1] = E[Y_{i1}(0) - Y_{i0}(0) | T_i = 0]$$
+    
+    <p><strong>In words:</strong> In the <em>absence of treatment</em>, the treated and control groups would have experienced the same change in outcomes over time.</p>
+    
+    <table>
+        <tr>
+            <th>Quantity</th>
+            <th>Observable?</th>
+            <th>Explanation</th>
+        </tr>
+        <tr>
+            <td>\(E[Y_{i0}(0)|T_i=1]\)</td>
+            <td style="background: var(--after-green);">Yes</td>
+            <td>Treated group, pre-period (before treatment)</td>
+        </tr>
+        <tr>
+            <td>\(E[Y_{i1}(0)|T_i=1]\)</td>
+            <td style="background: var(--vanish-red);">No</td>
+            <td>Counterfactual: treated group without treatment</td>
+        </tr>
+        <tr>
+            <td>\(E[Y_{i0}(0)|T_i=0]\)</td>
+            <td style="background: var(--after-green);">Yes</td>
+            <td>Control group, pre-period</td>
+        </tr>
+        <tr>
+            <td>\(E[Y_{i1}(0)|T_i=0]\)</td>
+            <td style="background: var(--after-green);">Yes</td>
+            <td>Control group, post-period</td>
+        </tr>
+    </table>
+</div>
+
+<div class="box proof">
+    <strong>Part 1: ATT Identification</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Define ATT</strong><br>
+        <span class="rule">Definition: Average Treatment Effect on the Treated</span>
+        $$\tau_{ATT} = E[Y_{i1}(1) - Y_{i1}(0) | T_i = 1]$$
+        <p>This is the effect of treatment on those who received it, in the post-period.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Rearrange to isolate counterfactual</strong><br>
+        <span class="rule">Rule: Add and subtract \(Y_{i0}(0)\)</span>
+        \begin{align}
+        \tau_{ATT} &= E[Y_{i1}(1) | T_i = 1] - E[Y_{i1}(0) | T_i = 1] \\
+        &= E[Y_{i1}(1) | T_i = 1] - E[Y_{i0}(0) | T_i = 1] \\
+        &\quad - \left( E[Y_{i1}(0) | T_i = 1] - E[Y_{i0}(0) | T_i = 1] \right)
+        \end{align}
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Apply parallel trends</strong><br>
+        <span class="rule">Rule: Parallel Trends Assumption</span>
+        <p>Replace <span class="before">\(E[Y_{i1}(0) - Y_{i0}(0) | T_i = 1]\)</span> with <span class="after">\(E[Y_{i1}(0) - Y_{i0}(0) | T_i = 0]\)</span></p>
+        
+        \begin{align}
+        \tau_{ATT} &= \underbrace{E[Y_{i1}(1) | T_i = 1] - E[Y_{i0}(0) | T_i = 1]}_{\text{Change in treated group}} \\
+        &\quad - \underbrace{\left( E[Y_{i1}(0) | T_i = 0] - E[Y_{i0}(0) | T_i = 0] \right)}_{\text{Change in control group}}
+        \end{align}
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Express in terms of observables (consistency)</strong><br>
+        <span class="rule">Rule: \(Y_{it} = Y_{it}(T_i)\) for observed outcomes</span>
+        $$\tau_{ATT} = \left( E[Y_{i1}|T_i=1] - E[Y_{i0}|T_i=1] \right) - \left( E[Y_{i1}|T_i=0] - E[Y_{i0}|T_i=0] \right)$$
+    </div>
+</div>
+
+<div class="box result">
+    $$\boxed{\tau_{ATT} = \underbrace{(\bar{Y}_{T=1,t=1} - \bar{Y}_{T=1,t=0})}_{\text{Treated: Post - Pre}} - \underbrace{(\bar{Y}_{T=0,t=1} - \bar{Y}_{T=0,t=0})}_{\text{Control: Post - Pre}}}$$
+    <p>The <strong>difference-in-differences</strong> of sample means identifies the ATT under parallel trends.</p>
+</div>
+
+<div class="box proof">
+    <strong>Part 2: Regression Representation</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Write the regression model</strong><br>
+        $$Y_i = \beta_0 + \beta_1 t_i + \beta_2 T_i + \beta_3 (T_i \times t_i) + u_i$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Compute conditional means</strong><br>
+        <table>
+            <tr>
+                <th>Group</th>
+                <th>\(T_i\)</th>
+                <th>\(t_i\)</th>
+                <th>\(E[Y_i]\)</th>
+            </tr>
+            <tr>
+                <td>Control, Pre</td>
+                <td>0</td>
+                <td>0</td>
+                <td>\(\beta_0\)</td>
+            </tr>
+            <tr>
+                <td>Control, Post</td>
+                <td>0</td>
+                <td>1</td>
+                <td>\(\beta_0 + \beta_1\)</td>
+            </tr>
+            <tr>
+                <td>Treated, Pre</td>
+                <td>1</td>
+                <td>0</td>
+                <td>\(\beta_0 + \beta_2\)</td>
+            </tr>
+            <tr>
+                <td>Treated, Post</td>
+                <td>1</td>
+                <td>1</td>
+                <td>\(\beta_0 + \beta_1 + \beta_2 + \beta_3\)</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Compute DiD</strong><br>
+        <span class="rule">Rule: Algebra</span>
+        \begin{align}
+        \hat{\beta}_3 &= (\bar{Y}_{T=1,t=1} - \bar{Y}_{T=1,t=0}) - (\bar{Y}_{T=0,t=1} - \bar{Y}_{T=0,t=0}) \\
+        &= [(\beta_0 + \beta_1 + \beta_2 + \beta_3) - (\beta_0 + \beta_2)] - [(\beta_0 + \beta_1) - \beta_0] \\
+        &= [\beta_1 + \beta_3] - [\beta_1] \\
+        &= \beta_3
+        \end{align}
+    </div>
+</div>
+
+<div class="box result">
+    $$\boxed{\hat{\beta}_3 = (\bar{Y}_{T=1,t=1} - \bar{Y}_{T=1,t=0}) - (\bar{Y}_{T=0,t=1} - \bar{Y}_{T=0,t=0}) = \hat{\tau}_{DiD}}$$
+</div>
+
+<div class="box intuition">
+    <strong>Coefficient Interpretation:</strong>
+    <ul>
+        <li>\(\beta_0\): Baseline level (control, pre-period)</li>
+        <li>\(\beta_1\): Time effect (common trend)</li>
+        <li>\(\beta_2\): Group difference (pre-existing difference)</li>
+        <li>\(\beta_3\): <strong>Treatment effect</strong> (DiD estimand)</li>
+    </ul>
+</div>
+
+<!-- ============== UNIT 4 ============== -->
+<div class="unit-header">🎛️ Unit 4 — Selection on Observables</div>
+
+<!-- Q15 -->
+<div class="question">
+    <h3>Q15. Ignorability and the Propensity Score</h3>
+    <p>State the unconfoundedness assumption: \(Y_i(1), Y_i(0) \perp T_i | X_i\)</p>
+    <p>Define the propensity score \(e(X_i) = P(T_i = 1 | X_i)\) and show why conditioning on \(e(X_i)\) suffices for unbiased estimation.</p>
+</div>
+
+<div class="box assumption">
+    <strong>Unconfoundedness (Conditional Independence / Selection on Observables):</strong>
+    $$Y_i(1), Y_i(0) \perp T_i \mid X_i$$
+    
+    <p><strong>In words:</strong> Conditional on observed covariates \(X_i\), treatment assignment is independent of potential outcomes.</p>
+    
+    <p><strong>Implications:</strong></p>
+    <ul>
+        <li>All confounders are observed and included in \(X_i\)</li>
+        <li>No unmeasured confounding</li>
+        <li>Within strata defined by \(X_i\), treatment is "as good as random"</li>
+    </ul>
+</div>
+
+<div class="box assumption">
+    <strong>Overlap (Common Support / Positivity):</strong>
+    $$0 < P(T_i = 1 | X_i) < 1 \quad \text{for all } X_i$$
+    <p>Every unit has positive probability of receiving either treatment or control.</p>
+</div>
+
+<div class="box definition">
+    <strong>Propensity Score (Rosenbaum & Rubin, 1983):</strong>
+    $$e(X_i) = P(T_i = 1 | X_i)$$
+    <p>The probability of receiving treatment given observed covariates.</p>
+</div>
+
+<div class="box proof">
+    <strong>Propensity Score Theorem: Why \(e(X)\) Suffices</strong>
+    
+    <p><strong>Claim:</strong> If \(Y(1), Y(0) \perp T | X\), then \(Y(1), Y(0) \perp T | e(X)\)</p>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Show \(T \perp X | e(X)\) (balancing property)</strong><br>
+        <span class="rule">Rule: Definition of propensity score</span>
+        <p>We need to show: \(P(T = 1 | X, e(X)) = P(T = 1 | e(X))\)</p>
+        
+        \begin{align}
+        P(T = 1 | X, e(X)) &= P(T = 1 | X) \quad \text{(since } e(X) \text{ is function of } X) \\
+        &= e(X) \quad \text{(definition)}
+        \end{align}
+        
+        <p>Also: \(P(T = 1 | e(X)) = E[T | e(X)] = E[E[T|X] | e(X)] = E[e(X) | e(X)] = e(X)\)</p>
+        
+        <p>Therefore: \(P(T = 1 | X, e(X)) = P(T = 1 | e(X)) = e(X)\)</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Use balancing to prove conditional independence</strong><br>
+        <span class="rule">Rule: Law of iterated expectations</span>
+        <p>For any function \(h\):</p>
+        \begin{align}
+        E[h(Y(1)) | T=1, e(X)] &= E[E[h(Y(1)) | T=1, X] | T=1, e(X)] \\
+        &= E[E[h(Y(1)) | X] | T=1, e(X)] \quad \text{(unconfoundedness)} \\
+        &= E[E[h(Y(1)) | X] | e(X)] \quad \text{(balancing property)} \\
+        &= E[h(Y(1)) | e(X)]
+        \end{align}
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Conclusion</strong><br>
+        $$Y(1), Y(0) \perp T | e(X)$$
+        <p>Conditioning on the <em>scalar</em> \(e(X)\) achieves the same independence as conditioning on the <em>vector</em> \(X\).</p>
+    </div>
+</div>
+
+<div class="box result">
+    <strong>Dimension Reduction:</strong>
+    $$\underbrace{X_i \in \mathbb{R}^p}_{\text{high-dimensional}} \quad \rightarrow \quad \underbrace{e(X_i) \in [0,1]}_{\text{1-dimensional}}$$
+    
+    <p>The propensity score is a <strong>balancing score</strong>: it reduces the covariate adjustment problem from \(p\) dimensions to 1 dimension.</p>
+</div>
+
+<div class="box proof">
+    <strong>Identification of ATE using Propensity Score:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Start with conditional independence</strong><br>
+        $$E[Y(1) | T=1, e(X)] = E[Y(1) | e(X)]$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Average over propensity score distribution</strong><br>
+        <span class="rule">Rule: Law of iterated expectations</span>
+        $$E[Y(1)] = E[E[Y(1) | e(X)]] = E[E[Y | T=1, e(X)]]$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Similarly for \(Y(0)\)</strong><br>
+        $$E[Y(0)] = E[E[Y | T=0, e(X)]]$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>ATE identification</strong><br>
+        $$\tau_{ATE} = E[Y(1)] - E[Y(0)] = E[E[Y|T=1,e(X)] - E[Y|T=0,e(X)]]$$
+    </div>
+</div>
+
+<div class="box intuition">
+    <strong>Why Does This Work?</strong>
+    <ul>
+        <li>The propensity score captures all the information in \(X\) relevant for treatment assignment</li>
+        <li>Units with similar \(e(X)\) are "comparable" even if their raw \(X\) values differ</li>
+        <li>Within propensity score strata, treatment is effectively randomized</li>
+        <li><strong>Practical benefit:</strong> Can match/weight on single number instead of many covariates</li>
+    </ul>
+</div>
+
+<!-- Q16 -->
+<div class="question">
+    <h3>Q16. Inverse Propensity Weighting (IPW)</h3>
+    <p>Use the law of iterated expectations to show:
+    $$E\left[\frac{T_i Y_i}{e(X_i)}\right] = E[Y_i(1)]$$
+    Explain intuitively why this creates a "pseudo-population" where treatment is independent of \(X_i\).</p>
+</div>
+
+<div class="box proof">
+    <strong>Derivation of IPW Identification:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Apply law of iterated expectations</strong><br>
+        <span class="rule">Rule: \(E[Y] = E[E[Y|X]]\)</span>
+        $$E\left[\frac{T_i Y_i}{e(X_i)}\right] = E\left[E\left[\frac{T_i Y_i}{e(X_i)} \Big| X_i\right]\right]$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Condition on \(X_i\) (propensity score is fixed)</strong><br>
+        <span class="rule">Rule: \(e(X_i)\) is a function of \(X_i\), so it's constant given \(X_i\)</span>
+        $$E\left[\frac{T_i Y_i}{e(X_i)} \Big| X_i\right] = \frac{1}{e(X_i)} E[T_i Y_i | X_i]$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Use consistency: \(T_i Y_i = T_i Y_i(1)\)</strong><br>
+        <span class="rule">Rule: From Q3, when \(T_i = 1\), \(Y_i = Y_i(1)\)</span>
+        $$\frac{1}{e(X_i)} E[T_i Y_i(1) | X_i]$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Apply unconfoundedness</strong><br>
+        <span class="rule">Rule: \(Y_i(1) \perp T_i | X_i\)</span>
+        $$\frac{1}{e(X_i)} E[T_i Y_i(1) | X_i] = \frac{1}{e(X_i)} E[T_i | X_i] \cdot E[Y_i(1) | X_i]$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">5</span> <strong>Substitute \(E[T_i | X_i] = e(X_i)\)</strong><br>
+        <span class="rule">Rule: Definition of propensity score</span>
+        $$= \frac{1}{e(X_i)} \cdot e(X_i) \cdot E[Y_i(1) | X_i] = E[Y_i(1) | X_i]$$
+        <p><span class="before">\(\frac{e(X_i)}{e(X_i)}\)</span> <span class="arrow">→</span> <span class="vanish">cancels to 1</span></p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">6</span> <strong>Take outer expectation</strong><br>
+        <span class="rule">Rule: Law of iterated expectations (reverse)</span>
+        $$E\left[\frac{T_i Y_i}{e(X_i)}\right] = E[E[Y_i(1) | X_i]] = E[Y_i(1)]$$
+    </div>
+</div>
+
+<div class="box result">
+    <strong>IPW Estimators:</strong>
+    $$\boxed{E[Y_i(1)] = E\left[\frac{T_i Y_i}{e(X_i)}\right]}$$
+    $$\boxed{E[Y_i(0)] = E\left[\frac{(1-T_i) Y_i}{1-e(X_i)}\right]}$$
+    
+    <strong>ATE Estimator (Horvitz-Thompson):</strong>
+    $$\hat{\tau}_{IPW} = \frac{1}{n}\sum_{i=1}^{n} \left[\frac{T_i Y_i}{e(X_i)} - \frac{(1-T_i) Y_i}{1-e(X_i)}\right]$$
+</div>
+
+<div class="box intuition">
+    <strong>Pseudo-Population Intuition:</strong>
+    <ul>
+        <li>Units with low propensity \(e(X_i)\) but who are treated are <em>rare</em> — upweight them</li>
+        <li>Units with high propensity who are treated are <em>common</em> — downweight them</li>
+        <li>The weights \(1/e(X_i)\) make treated units represent the full population</li>
+    </ul>
+    
+    <p><strong>Example:</strong> If women have \(e(X) = 0.2\) (rarely treated), each treated woman gets weight \(1/0.2 = 5\) to represent the 5 women (4 untreated + herself) with similar characteristics.</p>
+    
+    <strong>Result:</strong> In the weighted pseudo-population:
+    $$P^*(T=1 | X) = \text{constant} \implies T \perp X$$
+</div>
+
+<!-- Q18 -->
+<div class="question">
+    <h3>Q18. Covariate Balance and Common Support</h3>
+    <p>1. How do you check balance after weighting?</p>
+    <p>2. What happens when observations lie outside common support?</p>
+    <p>3. What practical remedies exist?</p>
+</div>
+
+<div class="box proof">
+    <strong>Part 1: Checking Balance After Weighting</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Standardized Mean Difference (SMD)</strong><br>
+        $$\text{SMD} = \frac{\bar{X}_1^w - \bar{X}_0^w}{\sqrt{(s_1^2 + s_0^2)/2}}$$
+        <p>where \(\bar{X}_1^w, \bar{X}_0^w\) are weighted means for treated/control.</p>
+        <p><strong>Rule of thumb:</strong> \(|\text{SMD}| < 0.1\) indicates good balance.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Compare distributions</strong><br>
+        <ul>
+            <li>Quantile-quantile plots of weighted covariates</li>
+            <li>Kolmogorov-Smirnov tests on weighted distributions</li>
+            <li>Variance ratios (should be close to 1)</li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Love plots</strong><br>
+        <p>Plot SMD before and after weighting for all covariates.</p>
+    </div>
+</div>
+
+<div class="box proof">
+    <strong>Part 2: Violations of Common Support</strong>
+    
+    <p><strong>Common Support:</strong> \(0 < e(X) < 1\) for all \(X\)</p>
+    
+    <table>
+        <tr>
+            <th>Problem</th>
+            <th>Consequence</th>
+        </tr>
+        <tr>
+            <td>\(e(X_i) \approx 0\)</td>
+            <td>Weight \(1/e(X_i) \to \infty\) for treated → <span style="color: red;">extreme variance</span></td>
+        </tr>
+        <tr>
+            <td>\(e(X_i) \approx 1\)</td>
+            <td>Weight \(1/(1-e(X_i)) \to \infty\) for control → <span style="color: red;">extreme variance</span></td>
+        </tr>
+        <tr>
+            <td>No overlap region</td>
+            <td><span style="color: red;">Cannot identify treatment effect</span> — extrapolating</td>
+        </tr>
+    </table>
+</div>
+
+<div class="box result">
+    <strong>Part 3: Practical Remedies</strong>
+    
+    <table>
+        <tr>
+            <th>Remedy</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><strong>Trimming</strong></td>
+            <td>Exclude units with \(e(X) < \epsilon\) or \(e(X) > 1-\epsilon\) (e.g., \(\epsilon = 0.1\))</td>
+        </tr>
+        <tr>
+            <td><strong>Truncation</strong></td>
+            <td>Cap weights at percentile (e.g., 99th)</td>
+        </tr>
+        <tr>
+            <td><strong>Stabilized weights</strong></td>
+            <td>Use \(w_i = \frac{P(T)}{e(X_i)}\) instead of \(\frac{1}{e(X_i)}\)</td>
+        </tr>
+        <tr>
+            <td><strong>Overlap weights</strong></td>
+            <td>\(w_i = T_i(1-e(X_i)) + (1-T_i)e(X_i)\) — emphasizes overlap region</td>
+        </tr>
+        <tr>
+            <td><strong>Matching</strong></td>
+            <td>Only use units with matches in opposite group</td>
+        </tr>
+    </table>
+</div>
+
+<!-- Q19 -->
+<div class="question">
+    <h3>Q19. Subclassification and Matching</h3>
+    <p>Explain how subclassification (stratification) on the estimated propensity score approximates randomized experiments. How does this relate to matching estimators?</p>
+</div>
+
+<div class="box proof">
+    <strong>Subclassification (Stratification):</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Divide sample into strata by \(\hat{e}(X)\)</strong><br>
+        <p>Create \(K\) strata (e.g., quintiles): \(S_1, S_2, \ldots, S_K\)</p>
+        <p>Within each stratum, units have similar propensity scores.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Within-stratum treatment effect</strong><br>
+        <span class="rule">Rule: Approximate randomization within strata</span>
+        <p>Within stratum \(k\):</p>
+        $$\hat{\tau}_k = \bar{Y}_{1,k} - \bar{Y}_{0,k}$$
+        <p>Since \(e(X) \approx \text{constant}\) within stratum, treatment is approximately independent of \(X\).</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Combine strata estimates</strong><br>
+        <span class="rule">Rule: Weighted average</span>
+        $$\hat{\tau}_{strat} = \sum_{k=1}^{K} \frac{n_k}{n} \hat{\tau}_k$$
+    </div>
+</div>
+
+<div class="box intuition">
+    <strong>Why This Approximates Randomization:</strong>
+    <ul>
+        <li>Propensity score balances <em>all</em> covariates (by definition)</li>
+        <li>Within a stratum, treated and control units have similar \(e(X)\)</li>
+        <li>Therefore, they have similar covariate distributions (on average)</li>
+        <li>Comparing within strata removes confounding, like blocking in experiments</li>
+    </ul>
+    
+    <p><strong>Cochran's result:</strong> 5 strata removes ~90% of bias from a single covariate.</p>
+</div>
+
+<div class="box definition">
+    <strong>Relationship to Matching:</strong>
+    
+    <p><strong>Matching</strong> is the limiting case of subclassification where each "stratum" contains one treated and one (or few) control unit(s).</p>
+    
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>Strata Size</th>
+            <th>Trade-off</th>
+        </tr>
+        <tr>
+            <td>Coarse subclassification</td>
+            <td>Large (quintiles)</td>
+            <td>More bias, less variance</td>
+        </tr>
+        <tr>
+            <td>Fine subclassification</td>
+            <td>Small</td>
+            <td>Less bias, more variance</td>
+        </tr>
+        <tr>
+            <td>1:1 Matching</td>
+            <td>2 units</td>
+            <td>Minimal bias, highest variance</td>
+        </tr>
+    </table>
+    
+    <p><strong>Matching estimator:</strong></p>
+    $$\hat{\tau}_{match} = \frac{1}{n_1} \sum_{i: T_i=1} \left[Y_i - Y_{j(i)}\right]$$
+    <p>where \(j(i)\) is the matched control for treated unit \(i\).</p>
+</div>
+
+<!-- Q22 -->
+<div class="question">
+    <h3>Q22. Entropy Balancing</h3>
+    <p>Consider: \(\min_{w_i} \sum_i w_i \log w_i\) subject to \(\sum_i w_i X_i = \bar{X}_{treated}\), \(\sum_i w_i = 1\).</p>
+    <p>1. What is the intuition behind this objective function?</p>
+    <p>2. How does entropy balancing differ from propensity weighting?</p>
+</div>
+
+<div class="box definition">
+    <strong>Entropy Balancing Optimization:</strong>
+    $$\min_{w_i} \sum_{i \in \text{control}} w_i \log w_i$$
+    <p>subject to:</p>
+    <ul>
+        <li><strong>Balance constraint:</strong> \(\sum_i w_i X_i = \bar{X}_{treated}\) (weighted control mean = treated mean)</li>
+        <li><strong>Normalization:</strong> \(\sum_i w_i = 1\) (weights sum to 1)</li>
+    </ul>
+</div>
+
+<div class="box intuition">
+    <strong>Part 1: Intuition Behind Objective</strong>
+    
+    <p><strong>Entropy:</strong> \(H(w) = -\sum_i w_i \log w_i\) measures "uniformity" of distribution.</p>
+    
+    <ul>
+        <li>Maximizing entropy (= minimizing \(\sum w_i \log w_i\)) finds the <em>most uniform</em> weights</li>
+        <li>Among all weight sets that achieve exact balance, choose the one closest to uniform</li>
+        <li>Prevents extreme weights that could inflate variance</li>
+        <li>Maximum entropy = "least informative" = makes minimal assumptions beyond balance</li>
+    </ul>
+    
+    <p><strong>Key insight:</strong> We want balance (constraints) but also stable weights (objective).</p>
+</div>
+
+<div class="box result">
+    <strong>Part 2: Entropy Balancing vs. Propensity Weighting</strong>
+    
+    <table>
+        <tr>
+            <th>Aspect</th>
+            <th>Propensity Weighting</th>
+            <th>Entropy Balancing</th>
+        </tr>
+        <tr>
+            <td><strong>Approach</strong></td>
+            <td>Model \(P(T|X)\), derive weights</td>
+            <td>Directly solve for weights that balance</td>
+        </tr>
+        <tr>
+            <td><strong>Balance</strong></td>
+            <td>Approximate (depends on PS model)</td>
+            <td><span class="after">Exact by construction</span></td>
+        </tr>
+        <tr>
+            <td><strong>Model dependence</strong></td>
+            <td>High (PS misspecification → bias)</td>
+            <td>Low (no model for PS)</td>
+        </tr>
+        <tr>
+            <td><strong>Extreme weights</strong></td>
+            <td>Can be very extreme</td>
+            <td>Controlled by entropy objective</td>
+        </tr>
+        <tr>
+            <td><strong>Diagnostics</strong></td>
+            <td>Check balance after weighting</td>
+            <td>Balance guaranteed; check weight distribution</td>
+        </tr>
+    </table>
+    
+    <p><strong>Reference:</strong> Hainmueller (2012) - "Entropy Balancing for Causal Effects"</p>
+</div>
+
+<hr style="margin: 50px 0;">
+
+<!-- ============== UNIT 5 ============== -->
+<div class="unit-header">🎻 Unit 5 — Instrumental Variables & RDD</div>
+
+<!-- Q25 -->
+<div class="question">
+    <h3>Q25. IV Identification</h3>
+    <p>List the four IV assumptions (relevance, exclusion, independence, monotonicity). For each, write its potential-outcomes interpretation.</p>
+</div>
+
+<div class="box definition">
+    <strong>Setup:</strong>
+    <ul>
+        <li>\(Z_i\) = Instrument (e.g., lottery, encouragement)</li>
+        <li>\(T_i\) = Treatment received (endogenous)</li>
+        <li>\(Y_i\) = Outcome</li>
+        <li>\(T_i(z)\) = Potential treatment under instrument value \(z\)</li>
+        <li>\(Y_i(t)\) = Potential outcome under treatment \(t\)</li>
+    </ul>
+</div>
+
+<div class="box assumption">
+    <strong>Assumption 1: RELEVANCE (First Stage)</strong>
+    
+    <p><strong>Statement:</strong> The instrument affects treatment assignment.</p>
+    $$E[T_i | Z_i = 1] \neq E[T_i | Z_i = 0]$$
+    
+    <p><strong>Potential Outcomes Form:</strong></p>
+    $$E[T_i(1) - T_i(0)] \neq 0$$
+    
+    <p><strong>Interpretation:</strong> There exist some units for whom the instrument changes treatment status. Without this, the instrument provides no information about treatment effects.</p>
+    
+    <p><strong>Testable?</strong> <span class="after">Yes</span> — check first-stage F-statistic (rule of thumb: F > 10).</p>
+</div>
+
+<div class="box assumption">
+    <strong>Assumption 2: INDEPENDENCE (Instrument Exogeneity)</strong>
+    
+    <p><strong>Statement:</strong> The instrument is as-good-as-randomly assigned.</p>
+    $$Z_i \perp \{Y_i(1), Y_i(0), T_i(1), T_i(0)\}$$
+    
+    <p><strong>Potential Outcomes Form:</strong> Instrument assignment is independent of all potential outcomes and potential treatments.</p>
+    
+    <p><strong>Interpretation:</strong> The instrument is not correlated with unobserved confounders. Often justified by:
+    <ul>
+        <li>Actual randomization (lottery, RCT with non-compliance)</li>
+        <li>Natural experiments (policy discontinuities)</li>
+    </ul>
+    </p>
+    
+    <p><strong>Testable?</strong> <span class="vanish">No</span> — fundamentally untestable, but can check balance on observables.</p>
+</div>
+
+<div class="box assumption">
+    <strong>Assumption 3: EXCLUSION RESTRICTION</strong>
+    
+    <p><strong>Statement:</strong> The instrument affects outcomes <em>only through</em> treatment.</p>
+    $$Y_i(t, z) = Y_i(t) \quad \text{for all } t, z$$
+    
+    <p><strong>Potential Outcomes Form:</strong> Potential outcomes depend on treatment \(t\) but not directly on instrument \(z\).</p>
+    
+    <p><strong>Interpretation:</strong> No direct effect of \(Z\) on \(Y\) except through \(T\). The instrument has no "side effects."</p>
+    
+    <p><strong>Example violation:</strong> Draft lottery (Z) affects earnings (Y) not just through military service (T) but also through educational deferments.</p>
+    
+    <p><strong>Testable?</strong> <span class="vanish">No</span> — requires domain knowledge and careful argumentation.</p>
+</div>
+
+<div class="box assumption">
+    <strong>Assumption 4: MONOTONICITY (No Defiers)</strong>
+    
+    <p><strong>Statement:</strong> The instrument affects everyone in the same direction (or not at all).</p>
+    $$T_i(1) \geq T_i(0) \quad \text{for all } i$$
+    <p>OR</p>
+    $$T_i(1) \leq T_i(0) \quad \text{for all } i$$
+    
+    <p><strong>Potential Outcomes Form:</strong> No unit has \(T_i(1) < T_i(0)\) when the instrument generally encourages treatment.</p>
+    
+    <p><strong>Interpretation:</strong> Defines four types of units:</p>
+    <table>
+        <tr>
+            <th>Type</th>
+            <th>\(T_i(0)\)</th>
+            <th>\(T_i(1)\)</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><strong>Compliers</strong></td>
+            <td>0</td>
+            <td>1</td>
+            <td>Take treatment iff encouraged</td>
+        </tr>
+        <tr>
+            <td><strong>Always-takers</strong></td>
+            <td>1</td>
+            <td>1</td>
+            <td>Always take treatment</td>
+        </tr>
+        <tr>
+            <td><strong>Never-takers</strong></td>
+            <td>0</td>
+            <td>0</td>
+            <td>Never take treatment</td>
+        </tr>
+        <tr>
+            <td><span class="vanish">Defiers</span></td>
+            <td>1</td>
+            <td>0</td>
+            <td><span class="vanish">Take treatment iff NOT encouraged</span></td>
+        </tr>
+    </table>
+    <p>Monotonicity assumes <span class="vanish">no defiers exist</span>.</p>
+    
+    <p><strong>Testable?</strong> <span class="vanish">No</span> — cannot identify individual types from data.</p>
+</div>
+
+<div class="box result">
+    <strong>Summary Table:</strong>
+    <table>
+        <tr>
+            <th>Assumption</th>
+            <th>Mathematical Form</th>
+            <th>Testable?</th>
+        </tr>
+        <tr>
+            <td>Relevance</td>
+            <td>\(E[T_i(1) - T_i(0)] \neq 0\)</td>
+            <td style="background: var(--after-green);">Yes</td>
+        </tr>
+        <tr>
+            <td>Independence</td>
+            <td>\(Z_i \perp \{Y_i(t), T_i(z)\}\)</td>
+            <td style="background: var(--vanish-red);">No</td>
+        </tr>
+        <tr>
+            <td>Exclusion</td>
+            <td>\(Y_i(t,z) = Y_i(t)\)</td>
+            <td style="background: var(--vanish-red);">No</td>
+        </tr>
+        <tr>
+            <td>Monotonicity</td>
+            <td>\(T_i(1) \geq T_i(0)\) for all \(i\)</td>
+            <td style="background: var(--vanish-red);">No</td>
+        </tr>
+    </table>
+</div>
+
+<!-- Q26 -->
+<div class="question">
+    <h3>Q26. LATE</h3>
+    <p>Derive the Local Average Treatment Effect (LATE):
+    $$\tau_{LATE} = \frac{E[Y_i | Z_i = 1] - E[Y_i | Z_i = 0]}{E[T_i | Z_i = 1] - E[T_i | Z_i = 0]}$$</p>
+</div>
+
+<div class="box definition">
+    <strong>LATE Definition:</strong>
+    $$\tau_{LATE} = E[Y_i(1) - Y_i(0) | \text{Complier}]$$
+    <p>The average treatment effect for <em>compliers only</em> — those whose treatment status is affected by the instrument.</p>
+</div>
+
+<div class="box proof">
+    <strong>LATE Derivation:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Decompose \(E[Y_i | Z_i = 1]\) by compliance type</strong><br>
+        <span class="rule">Rule: Law of total expectation</span>
+        <p>Under exclusion restriction, \(Y_i = Y_i(T_i)\), so:</p>
+        \begin{align}
+        E[Y_i | Z_i = 1] &= E[Y_i(T_i(1)) | Z_i = 1] \\
+        &= E[Y_i(T_i(1))] \quad \text{(by independence)}
+        \end{align}
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Break down by compliance type</strong><br>
+        <span class="rule">Rule: Partition by complier types</span>
+        <p>Let \(\pi_c, \pi_a, \pi_n\) be proportions of compliers, always-takers, never-takers:</p>
+        \begin{align}
+        E[Y_i(T_i(1))] &= \pi_c \cdot E[Y_i(1) | C] + \pi_a \cdot E[Y_i(1) | A] + \pi_n \cdot E[Y_i(0) | N]
+        \end{align}
+        <p>where \(C\) = complier, \(A\) = always-taker, \(N\) = never-taker.</p>
+        <p>(Compliers have \(T_i(1) = 1\), always-takers have \(T_i(1) = 1\), never-takers have \(T_i(1) = 0\))</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Similarly for \(Z_i = 0\)</strong><br>
+        \begin{align}
+        E[Y_i | Z_i = 0] &= E[Y_i(T_i(0))] \\
+        &= \pi_c \cdot E[Y_i(0) | C] + \pi_a \cdot E[Y_i(1) | A] + \pi_n \cdot E[Y_i(0) | N]
+        \end{align}
+        <p>(Compliers have \(T_i(0) = 0\), always-takers have \(T_i(0) = 1\), never-takers have \(T_i(0) = 0\))</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Take the difference (ITT)</strong><br>
+        <span class="rule">Rule: Intent-to-Treat effect</span>
+        \begin{align}
+        &E[Y_i | Z_i = 1] - E[Y_i | Z_i = 0] \\
+        &= \pi_c \cdot E[Y_i(1) | C] + \cancel{\pi_a \cdot E[Y_i(1) | A]} + \cancel{\pi_n \cdot E[Y_i(0) | N]} \\
+        &\quad - \pi_c \cdot E[Y_i(0) | C] - \cancel{\pi_a \cdot E[Y_i(1) | A]} - \cancel{\pi_n \cdot E[Y_i(0) | N]} \\
+        &= \pi_c \cdot \left( E[Y_i(1) | C] - E[Y_i(0) | C] \right)
+        \end{align}
+        <p><span class="vanish">Always-taker and never-taker terms cancel!</span></p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">5</span> <strong>Compute the denominator (first stage)</strong><br>
+        <span class="rule">Rule: Proportion of compliers</span>
+        \begin{align}
+        E[T_i | Z_i = 1] - E[T_i | Z_i = 0] &= E[T_i(1)] - E[T_i(0)] \\
+        &= (\pi_c + \pi_a) - (\pi_a) \\
+        &= \pi_c
+        \end{align}
+        <p>The first stage equals the proportion of compliers!</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">6</span> <strong>Form the ratio</strong><br>
+        <span class="rule">Rule: Wald estimator</span>
+        $$\tau_{LATE} = \frac{E[Y_i | Z_i = 1] - E[Y_i | Z_i = 0]}{E[T_i | Z_i = 1] - E[T_i | Z_i = 0]} = \frac{\pi_c \cdot E[Y_i(1) - Y_i(0) | C]}{\pi_c}$$
+    </div>
+</div>
+
+<div class="box result">
+    $$\boxed{\tau_{LATE} = \frac{\text{ITT}_Y}{\text{ITT}_T} = \frac{E[Y|Z=1] - E[Y|Z=0]}{E[T|Z=1] - E[T|Z=0]} = E[Y(1) - Y(0) | \text{Complier}]}$$
+    
+    <p><strong>Interpretation:</strong></p>
+    <ul>
+        <li>Numerator = Intent-to-Treat effect on outcome (reduced form)</li>
+        <li>Denominator = Intent-to-Treat effect on treatment (first stage)</li>
+        <li>Ratio = Effect for those whose treatment was changed by instrument</li>
+    </ul>
+</div>
+
+<div class="box intuition">
+    <strong>Key Insights:</strong>
+    <ul>
+        <li><strong>Why "Local"?</strong> LATE is only for compliers, not the full population</li>
+        <li><strong>Why compliers matter:</strong> They're the only ones whose treatment varies with \(Z\)</li>
+        <li><strong>Always/Never-takers:</strong> Provide no information (their treatment doesn't depend on \(Z\))</li>
+        <li><strong>External validity:</strong> LATE may differ from ATE if compliers are special</li>
+    </ul>
+    
+    <p><strong>2SLS Connection:</strong> The Wald estimator equals the IV/2SLS estimator when \(Z\) is binary.</p>
+</div>
+
+<!-- Q28 -->
+<div class="question">
+    <h3>Q28. Encouragement Designs</h3>
+    <p>Describe how encouragement designs approximate random assignment. Why are they often modeled as fuzzy rather than sharp experiments?</p>
+</div>
+
+<div class="box definition">
+    <strong>Encouragement Design:</strong>
+    <p>A study where researchers randomly assign <em>encouragement</em> to take treatment, not treatment itself.</p>
+    
+    <p><strong>Examples:</strong></p>
+    <ul>
+        <li>Randomly send reminders to get flu shots (encouragement) vs. actually getting shot (treatment)</li>
+        <li>Randomly offer scholarship (encouragement) vs. attending college (treatment)</li>
+        <li>Randomly assign to job training lottery vs. actually completing training</li>
+    </ul>
+</div>
+
+<div class="box proof">
+    <strong>How Encouragement Approximates Randomization:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Randomize the encouragement</strong><br>
+        $$Z_i \sim \text{Bernoulli}(0.5) \quad \text{(randomly assigned)}$$
+        <p>This ensures \(Z_i \perp \{Y_i(t), T_i(z)\}\) — the independence assumption is satisfied <em>by design</em>.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Encouragement affects treatment uptake</strong><br>
+        $$P(T_i = 1 | Z_i = 1) > P(T_i = 1 | Z_i = 0)$$
+        <p>Encouraged individuals are more likely to take treatment — relevance is satisfied.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Use IV framework</strong><br>
+        <p>Treat encouragement \(Z\) as an instrument for treatment \(T\):</p>
+        $$\hat{\tau}_{LATE} = \frac{\bar{Y}_{Z=1} - \bar{Y}_{Z=0}}{\bar{T}_{Z=1} - \bar{T}_{Z=0}}$$
+    </div>
+</div>
+
+<div class="box result">
+    <strong>Why Fuzzy Rather Than Sharp?</strong>
+    
+    <table>
+        <tr>
+            <th>Design Type</th>
+            <th>Definition</th>
+            <th>Compliance</th>
+        </tr>
+        <tr>
+            <td><strong>Sharp Experiment</strong></td>
+            <td>\(T_i = Z_i\) for all \(i\)</td>
+            <td>Perfect compliance</td>
+        </tr>
+        <tr>
+            <td><strong>Fuzzy Experiment</strong></td>
+            <td>\(P(T_i = 1 | Z_i = 1) \neq P(T_i = 1 | Z_i = 0)\)</td>
+            <td>Imperfect compliance</td>
+        </tr>
+    </table>
+    
+    <p><strong>Encouragement designs are fuzzy because:</strong></p>
+    <ul>
+        <li>Cannot force people to take treatment (ethical/practical constraints)</li>
+        <li>Some encouraged people don't comply (never-takers among encouraged)</li>
+        <li>Some non-encouraged people take treatment anyway (always-takers)</li>
+        <li>Encouragement only <em>shifts</em> treatment probability, doesn't determine it</li>
+    </ul>
+</div>
+
+<div class="box intuition">
+    <strong>Advantages of Encouragement Designs:</strong>
+    <ul>
+        <li><strong>Ethical:</strong> Don't force treatment on unwilling participants</li>
+        <li><strong>Practical:</strong> Many treatments can't be mandated</li>
+        <li><strong>Valid IV:</strong> Randomization ensures independence assumption</li>
+    </ul>
+    
+    <strong>Limitations:</strong>
+    <ul>
+        <li>Only identifies LATE (effect on compliers), not ATE</li>
+        <li>Weaker first stage → less precise estimates</li>
+        <li>Exclusion restriction may be violated if encouragement has direct effects</li>
+    </ul>
+</div>
+
+<!-- ============== UNIT 7 ============== -->
+<div class="unit-header">🌲 Unit 7 — Causal Machine Learning</div>
+
+<!-- Q33 -->
+<div class="question">
+    <h3>Q33. Treatment Effect Heterogeneity</h3>
+    <p>Define the Conditional Average Treatment Effect (CATE):
+    $$\tau(x) = E[Y_i(1) - Y_i(0) | X_i = x]$$
+    Why is estimating \(\tau(x)\) more challenging than estimating the ATE?</p>
+</div>
+
+<div class="box definition">
+    <strong>Conditional Average Treatment Effect (CATE):</strong>
+    $$\tau(x) = E[Y_i(1) - Y_i(0) | X_i = x]$$
+    
+    <p>The average treatment effect for the subpopulation with covariates \(X_i = x\).</p>
+    
+    <p><strong>Related Quantities:</strong></p>
+    <ul>
+        <li><strong>ATE:</strong> \(\tau = E[\tau(X_i)] = E[Y(1) - Y(0)]\) — average over all \(X\)</li>
+        <li><strong>ATT:</strong> \(\tau_{ATT} = E[\tau(X_i) | T_i = 1]\) — average for treated</li>
+        <li><strong>CATE:</strong> \(\tau(x)\) — effect at specific \(x\)</li>
+    </ul>
+</div>
+
+<div class="box proof">
+    <strong>Challenges in Estimating CATE vs. ATE:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Fundamental problem amplified</strong><br>
+        <span class="rule">Issue: Never observe both potential outcomes</span>
+        <p>For ATE, we average over many units, so individual missing outcomes "average out."</p>
+        <p>For CATE at specific \(x\), we have fewer units with \(X_i = x\), making the problem harder.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Curse of dimensionality</strong><br>
+        <span class="rule">Issue: Data sparsity in high dimensions</span>
+        <p>If \(X \in \mathbb{R}^p\), the number of observations near any point \(x\) shrinks exponentially in \(p\).</p>
+        $$n_{local} \sim n \cdot h^p \quad \text{where } h = \text{bandwidth}$$
+        <p>With 10 covariates and bandwidth 0.1: only \(n \cdot 10^{-10}\) observations nearby!</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Estimation vs. averaging</strong><br>
+        <span class="rule">Issue: Function estimation harder than mean estimation</span>
+        <table>
+            <tr>
+                <th>Estimand</th>
+                <th>Task</th>
+                <th>Rate</th>
+            </tr>
+            <tr>
+                <td>ATE</td>
+                <td>Estimate one number</td>
+                <td>\(\sqrt{n}\)-consistent</td>
+            </tr>
+            <tr>
+                <td>CATE \(\tau(x)\)</td>
+                <td>Estimate a function</td>
+                <td>Slower (nonparametric rates)</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>No ground truth for validation</strong><br>
+        <span class="rule">Issue: Cannot compute prediction error directly</span>
+        <p>For prediction: can compute \(\hat{Y} - Y\) on test set.</p>
+        <p>For CATE: cannot compute \(\hat{\tau}(x) - \tau_i\) because \(\tau_i = Y_i(1) - Y_i(0)\) is never observed!</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">5</span> <strong>Regularization bias-variance tradeoff</strong><br>
+        <span class="rule">Issue: ML methods introduce bias</span>
+        <p>ML models that work well for prediction may not estimate causal effects well:</p>
+        <ul>
+            <li>Regularization biases effect estimates toward zero</li>
+            <li>Model selection criteria (CV error) don't target causal accuracy</li>
+        </ul>
+    </div>
+</div>
+
+<div class="box result">
+    <strong>Summary of Challenges:</strong>
+    <table>
+        <tr>
+            <th>Challenge</th>
+            <th>ATE</th>
+            <th>CATE</th>
+        </tr>
+        <tr>
+            <td>Sample size needed</td>
+            <td>Moderate</td>
+            <td><span style="color: red;">Much larger</span></td>
+        </tr>
+        <tr>
+            <td>Dimensionality</td>
+            <td>Less affected</td>
+            <td><span style="color: red;">Curse of dimensionality</span></td>
+        </tr>
+        <tr>
+            <td>Validation</td>
+            <td>Standard errors</td>
+            <td><span style="color: red;">No direct validation</span></td>
+        </tr>
+        <tr>
+            <td>Convergence rate</td>
+            <td>\(\sqrt{n}\)</td>
+            <td><span style="color: red;">Slower</span></td>
+        </tr>
+    </table>
+</div>
+
+<!-- Q34 -->
+<div class="question">
+    <h3>Q34. Honest Inference</h3>
+    <p>What does it mean for an estimator to be <em>honest</em> (Wager & Athey, 2018)? Why is sample splitting crucial?</p>
+</div>
+
+<div class="box definition">
+    <strong>Honesty (Wager & Athey, 2018):</strong>
+    <p>An estimator \(\hat{\tau}(x)\) is <strong>honest</strong> if:</p>
+    $$\text{Data for model structure} \perp \text{Data for estimation} \quad \text{(given sample)}$$
+    
+    <p><strong>More precisely:</strong> The partition of feature space (e.g., tree structure) is determined independently of the data used to estimate treatment effects within each partition.</p>
+</div>
+
+<div class="box proof">
+    <strong>Why Sample Splitting is Crucial:</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>The problem without splitting</strong><br>
+        <span class="rule">Issue: Adaptive selection bias</span>
+        <p>If we use the same data to:</p>
+        <ul>
+            <li>Decide where to split (find subgroups with large effects)</li>
+            <li>Estimate effects in those subgroups</li>
+        </ul>
+        <p>Then estimates are <span style="color: red;">biased upward</span> — we selected subgroups <em>because</em> they looked good in this data.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Invalid confidence intervals</strong><br>
+        <span class="rule">Issue: Post-selection inference</span>
+        <p>Standard errors assume the model was pre-specified. If the model was chosen based on data, CIs have <span style="color: red;">incorrect coverage</span>.</p>
+        $$P(\tau(x) \in \hat{CI}) \neq 0.95$$
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Solution: Honest splitting</strong><br>
+        <span class="rule">Rule: Separate structure and estimation</span>
+        <p><strong>Split sample into two parts:</strong></p>
+        <table>
+            <tr>
+                <th>Sample</th>
+                <th>Used For</th>
+                <th>Sees</th>
+            </tr>
+            <tr>
+                <td><strong>Structure sample</strong> \(I_1\)</td>
+                <td>Determine splits (tree structure)</td>
+                <td>Only covariates \(X_i\), not outcomes</td>
+            </tr>
+            <tr>
+                <td><strong>Estimation sample</strong> \(I_2\)</td>
+                <td>Estimate \(\hat{\tau}(x)\) in each leaf</td>
+                <td>Full data, but structure is fixed</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Properties of honest estimators</strong><br>
+        <span class="rule">Result: Valid inference</span>
+        <ul>
+            <li><strong>Unbiasedness:</strong> \(E[\hat{\tau}(x) | x \in \text{leaf } L] = \tau_L\) (within-leaf average effect)</li>
+            <li><strong>Valid CIs:</strong> Confidence intervals have correct coverage asymptotically</li>
+            <li><strong>Asymptotic normality:</strong> \(\frac{\hat{\tau}(x) - \tau(x)}{\hat{se}} \xrightarrow{d} N(0,1)\)</li>
+        </ul>
+    </div>
+</div>
+
+<div class="box result">
+    <strong>Honest vs. Adaptive Estimation:</strong>
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Adaptive (same data)</th>
+            <th>Honest (split data)</th>
+        </tr>
+        <tr>
+            <td>Bias</td>
+            <td><span style="color: red;">Upward biased</span></td>
+            <td><span style="color: green;">Unbiased</span></td>
+        </tr>
+        <tr>
+            <td>CI Coverage</td>
+            <td><span style="color: red;">Too narrow</span></td>
+            <td><span style="color: green;">Correct</span></td>
+        </tr>
+        <tr>
+            <td>Efficiency</td>
+            <td>Appears better</td>
+            <td>Lower (uses half data for each task)</td>
+        </tr>
+        <tr>
+            <td>Scientific validity</td>
+            <td><span style="color: red;">Invalid</span></td>
+            <td><span style="color: green;">Valid</span></td>
+        </tr>
+    </table>
+</div>
+
+<div class="box intuition">
+    <strong>Key Insight:</strong>
+    <p>Honesty sacrifices some efficiency (by splitting data) to gain valid inference. This trade-off is essential for scientific credibility — we'd rather have a wider but honest confidence interval than a narrow but meaningless one.</p>
+    
+    <p><strong>Analogy:</strong> Like pre-registration in clinical trials — you can't change your hypothesis after seeing the results.</p>
+</div>
+
+<!-- Q36 -->
+<div class="question">
+    <h3>Q36. Causal Forests</h3>
+    <p>1. How do causal forests estimate treatment heterogeneity?</p>
+    <p>2. What is "honest splitting"?</p>
+</div>
+
+<div class="box definition">
+    <strong>Causal Forest (Wager & Athey, 2018; Athey, Tibshirani & Wager, 2019):</strong>
+    <p>An ensemble method that estimates heterogeneous treatment effects \(\tau(x)\) by:</p>
+    <ol>
+        <li>Growing many causal trees</li>
+        <li>Each tree partitions covariate space to maximize treatment effect heterogeneity</li>
+        <li>Averaging predictions across trees</li>
+    </ol>
+</div>
+
+<div class="box proof">
+    <strong>Part 1: How Causal Forests Estimate Heterogeneity</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Single Causal Tree</strong><br>
+        <span class="rule">Splitting criterion: Maximize heterogeneity</span>
+        <p>At each node, find split that maximizes:</p>
+        $$\Delta = \sum_{child} n_{child} \cdot (\hat{\tau}_{child} - \hat{\tau}_{parent})^2$$
+        <p>This finds subgroups with different treatment effects.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Leaf estimation</strong><br>
+        <span class="rule">Rule: Within-leaf difference-in-means</span>
+        <p>In each leaf \(L\):</p>
+        $$\hat{\tau}_L = \frac{1}{|L_1|}\sum_{i \in L_1} Y_i - \frac{1}{|L_0|}\sum_{i \in L_0} Y_i$$
+        <p>where \(L_1, L_0\) are treated/control units in leaf.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Forest aggregation</strong><br>
+        <span class="rule">Rule: Weighted average across trees</span>
+        <p>For a new point \(x\), the forest prediction is:</p>
+        $$\hat{\tau}(x) = \frac{1}{B}\sum_{b=1}^{B} \hat{\tau}^{(b)}(x)$$
+        <p>where \(\hat{\tau}^{(b)}(x)\) is the prediction from tree \(b\).</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Kernel interpretation</strong><br>
+        <span class="rule">Rule: Adaptive nearest-neighbor weights</span>
+        <p>Can be written as weighted average of outcomes:</p>
+        $$\hat{\tau}(x) = \sum_{i=1}^{n} \alpha_i(x) \cdot Y_i$$
+        <p>where \(\alpha_i(x)\) = how often unit \(i\) is in same leaf as \(x\) across trees.</p>
+        <p>Units that frequently share leaves with \(x\) get higher weight.</p>
+    </div>
+</div>
+
+<div class="box proof">
+    <strong>Part 2: Honest Splitting in Causal Forests</strong>
+    
+    <div class="step">
+        <span class="step-num">1</span> <strong>Subsample splitting</strong><br>
+        <span class="rule">Rule: Each tree uses split data</span>
+        <p>For each tree \(b\):</p>
+        <ul>
+            <li>Draw subsample of size \(s < n\)</li>
+            <li>Split subsample in half: \(I_1^{(b)}\) (structure), \(I_2^{(b)}\) (estimation)</li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">2</span> <strong>Structure determination (using \(I_1^{(b)}\))</strong><br>
+        <span class="rule">Rule: Splits based on treatment effect heterogeneity</span>
+        <p>Use structure sample to decide where to split:</p>
+        <ul>
+            <li>For each candidate split, estimate \(\hat{\tau}_{left}, \hat{\tau}_{right}\)</li>
+            <li>Choose split maximizing heterogeneity</li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">3</span> <strong>Effect estimation (using \(I_2^{(b)}\))</strong><br>
+        <span class="rule">Rule: Fresh data for leaf estimates</span>
+        <p>Once tree structure is fixed, use estimation sample to compute \(\hat{\tau}_L\) in each leaf.</p>
+        <p>This ensures estimates are unbiased conditional on tree structure.</p>
+    </div>
+    
+    <div class="step">
+        <span class="step-num">4</span> <strong>Double-sample trees</strong><br>
+        <p>Full procedure for one honest tree:</p>
+        <pre style="background: #f4f4f4; padding: 10px; border-radius: 5px;">
+1. Draw subsample S from full data
+2. Split S → I₁ (structure), I₂ (estimation)  
+3. Grow tree using I₁:
+   - At each node, find best split
+   - Stop when leaves have min size
+4. Estimate effects using I₂:
+   - For each leaf L, compute τ̂_L from I₂ ∩ L
+        </pre>
+    </div>
+</div>
+
+<div class="box result">
+    <strong>Key Properties of Causal Forests:</strong>
+    
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><strong>Consistency</strong></td>
+            <td>\(\hat{\tau}(x) \xrightarrow{p} \tau(x)\) as \(n \to \infty\)</td>
+        </tr>
+        <tr>
+            <td><strong>Asymptotic Normality</strong></td>
+            <td>\(\frac{\hat{\tau}(x) - \tau(x)}{\hat{\sigma}(x)} \xrightarrow{d} N(0,1)\)</td>
+        </tr>
+        <tr>
+            <td><strong>Valid Confidence Intervals</strong></td>
+            <td>Can construct CIs with correct coverage</td>
+        </tr>
+        <tr>
+            <td><strong>Variance Estimation</strong></td>
+            <td>Infinitesimal jackknife provides \(\hat{\sigma}^2(x)\)</td>
+        </tr>
+    </table>
+</div>
+
+<div class="box intuition">
+    <strong>Why Causal Forests Work:</strong>
+    <ul>
+        <li><strong>Adaptive:</strong> Automatically find relevant interactions and nonlinearities</li>
+        <li><strong>Honest:</strong> Sample splitting ensures valid inference</li>
+        <li><strong>Ensemble:</strong> Averaging reduces variance and smooths predictions</li>
+        <li><strong>Local:</strong> Effect at \(x\) uses only "similar" units (in same leaves)</li>
+    </ul>
+    
+    <strong>Implementation:</strong> Available in R package <code>grf</code> (Generalized Random Forests).
+</div>
+
+<hr style="margin: 50px 0;">
+
+<div style="text-align: center; padding: 30px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border-radius: 10px;">
+    <h2 style="color: white; border: none;">✅ Complete Study Guide (Q1–Q36)</h2>
+    <p><strong>Unit 1:</strong> Foundations, Potential Outcomes, Randomization (Q1–Q6)</p>
+    <p><strong>Unit 2:</strong> Experimental Design, Blocking, Multiple Testing (Q7–Q10)</p>
+    <p><strong>Unit 3:</strong> Difference-in-Differences (Q11)</p>
+    <p><strong>Unit 4:</strong> Selection on Observables, Propensity Scores (Q15–Q19, Q22)</p>
+    <p><strong>Unit 5:</strong> Instrumental Variables, LATE, Encouragement Designs (Q25–Q26, Q28)</p>
+    <p><strong>Unit 7:</strong> Causal ML, CATE, Honest Inference, Causal Forests (Q33–Q34, Q36)</p>
+</div>
+
+</body>
+</html>

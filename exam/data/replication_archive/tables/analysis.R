@@ -1,4 +1,4 @@
-setwd("__your_path_here__") 
+setwd("./") 
 
 rm(list=ls())
 set.seed(12435)

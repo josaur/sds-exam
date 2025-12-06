@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDS100 Statistics Exam Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --bg-cream: #faf8f5;
+            --text-dark: #1a1a2e;
+            --accent-blue: #2563eb;
+            --accent-teal: #0d9488;
+            --accent-purple: #7c3aed;
+            --box-definition: #dbeafe;
+            --box-definition-border: #3b82f6;
+            --box-theorem: #fce7f3;
+            --box-theorem-border: #ec4899;
+            --box-proof: #d1fae5;
+            --box-proof-border: #10b981;
+            --box-example: #fef3c7;
+            --box-example-border: #f59e0b;
+            --box-warning: #fee2e2;
+            --box-warning-border: #ef4444;
+            --box-intuition: #e0e7ff;
+            --box-intuition-border: #6366f1;
+            --shadow-soft: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.7;
+            font-size: 17px;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-soft);
+        }
+        header h1 { font-family: 'Crimson Pro', serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        header .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.9rem;
+            color: var(--accent-blue);
+            margin: 2.5rem 0 1.2rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 3px solid var(--accent-blue);
+        }
+        h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--text-dark); margin: 1.8rem 0 0.8rem; }
+        h4 { font-size: 1.1rem; color: var(--accent-purple); margin: 1.3rem 0 0.6rem; font-weight: 600; }
+        p { margin-bottom: 0.9rem; }
+        .box {
+            padding: 1.2rem 1.4rem;
+            border-radius: 8px;
+            margin: 1.3rem 0;
+            border-left: 5px solid;
+            box-shadow: var(--shadow-soft);
+        }
+        .box-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem; }
+        .definition { background: var(--box-definition); border-color: var(--box-definition-border); }
+        .definition .box-title { color: var(--box-definition-border); }
+        .theorem { background: var(--box-theorem); border-color: var(--box-theorem-border); }
+        .theorem .box-title { color: var(--box-theorem-border); }
+        .proof { background: var(--box-proof); border-color: var(--box-proof-border); }
+        .proof .box-title { color: var(--box-proof-border); }
+        .example { background: var(--box-example); border-color: var(--box-example-border); }
+        .example .box-title { color: var(--box-example-border); }
+        .warning { background: var(--box-warning); border-color: var(--box-warning-border); }
+        .warning .box-title { color: var(--box-warning-border); }
+        .intuition { background: var(--box-intuition); border-color: var(--box-intuition-border); }
+        .intuition .box-title { color: var(--box-intuition-border); }
+        .var-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; background: white; border-radius: 8px; overflow: hidden; }
+        .var-table th { background: #374151; color: white; padding: 0.6rem 0.8rem; text-align: left; font-weight: 600; }
+        .var-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #e5e7eb; }
+        .var-table tr:last-child td { border-bottom: none; }
+        .var-table tr:nth-child(even) { background: #f9fafb; }
+        .derivation { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.2rem; margin: 1.2rem 0; }
+        .derivation-step { display: flex; gap: 0.8rem; margin: 0.8rem 0; align-items: flex-start; }
+        .step-number {
+            background: var(--accent-blue);
+            color: white;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 600; font-size: 0.85rem; flex-shrink: 0;
+        }
+        .step-content { flex: 1; }
+        .step-explanation { color: #6b7280; font-size: 0.9rem; margin-top: 0.4rem; }
+        .law-used {
+            display: inline-block;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #92400e;
+            margin: 0.2rem 0.2rem 0.2rem 0;
+        }
+        .toc { background: white; border-radius: 8px; padding: 1.2rem 1.5rem; margin: 1.5rem 0; box-shadow: var(--shadow-soft); }
+        .toc h3 { margin-top: 0; color: var(--accent-blue); }
+        .toc ul { list-style: none; margin: 0; padding: 0; }
+        .toc li { padding: 0.3rem 0; border-bottom: 1px dotted #e5e7eb; }
+        .toc li:last-child { border-bottom: none; }
+        .toc a { color: var(--text-dark); text-decoration: none; }
+        .toc a:hover { color: var(--accent-blue); }
+        ul, ol { margin: 0.8rem 0; padding-left: 1.4rem; }
+        li { margin: 0.4rem 0; }
+        code { font-family: 'JetBrains Mono', monospace; background: #f3f4f6; padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.9em; }
+        section { margin-bottom: 3rem; }
+        @media print { body { background: white; } .container { max-width: 100%; padding: 1rem; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>SDS100: Statistics for Data Scientists</h1>
+        <p class="subtitle">Complete Exam Guide with Derivations & Intuition</p>
+    </header>
+
+    <nav class="toc">
+        <h3>📚 Table of Contents</h3>
+        <ul>
+            <li><a href="#part1">Part I: Conditional Expectation & Loss Minimization</a></li>
+            <li><a href="#part2">Part II: Simple Linear Regression</a></li>
+            <li><a href="#part3">Part III: Leave-One-Out, Hat Matrix & GCV</a></li>
+            <li><a href="#part4">Part IV: Inference and Properties of OLS</a></li>
+            <li><a href="#part5">Part V: Multiple Regression, FE & Clustering</a></li>
+            <li><a href="#part6">Part VI: Double Machine Learning (DML) ⭐</a></li>
+            <li><a href="#part7">Part VII: Probability Foundations — LLN, CLT, Chebyshev, Slutsky ⭐</a></li>
+        </ul>
+        <p style="margin-top: 1rem; color: #6b7280; font-size: 0.9rem;">⭐ = Main exam topics with complete derivations</p>
+    </nav>
+
+    <!-- PART I -->
+    <section id="part1">
+        <h2>Part I: Conditional Expectation & Loss Minimization</h2>
+
+        <div class="box definition">
+            <div class="box-title">📘 Key Variables & Notation</div>
+            <table class="var-table">
+                <tr><th>Symbol</th><th>Meaning</th><th>Type</th></tr>
+                <tr><td>\(Y\)</td><td>Response/dependent variable</td><td>Random</td></tr>
+                <tr><td>\(X\)</td><td>Predictor/explanatory variable</td><td>Random</td></tr>
+                <tr><td>\(m(X)\)</td><td>Function of \(X\) used to predict \(Y\)</td><td>Function</td></tr>
+                <tr><td>\(E[Y|X]\)</td><td>Conditional expectation of \(Y\) given \(X\)</td><td>Random</td></tr>
+                <tr><td>\(m_q\)</td><td>Minimizer of \(E[|Y - c|^q]\)</td><td>Constant</td></tr>
+            </table>
+        </div>
+
+        <h3>I.1: \(m(X) = E[Y|X]\) Minimizes \(E[(Y - m(X))^2]\)</h3>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition</div>
+            <p>The conditional expectation is the <strong>best L² predictor</strong>. Among all functions of \(X\), it minimizes the mean squared prediction error. It answers: "Given \(X\), what single value best represents \(Y\) on average?"</p>
+        </div>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Theorem: Conditional Expectation as Best Predictor</div>
+            <p>For any function \(g(X)\): \(E[(Y - E[Y|X])^2] \leq E[(Y - g(X))^2]\)</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Add and subtract \(E[Y|X]\):</strong>
+                        \[E[(Y - m(X))^2] = E[((Y - E[Y|X]) + (E[Y|X] - m(X)))^2]\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Expand:</strong>
+                        \[= E[(Y - E[Y|X])^2] + 2E[(Y - E[Y|X])(E[Y|X] - m(X))] + E[(E[Y|X] - m(X))^2]\]
+                        <p class="step-explanation"><span class="law-used">\((a+b)^2 = a^2 + 2ab + b^2\)</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>The cross-term vanishes:</strong>
+                        <p>Using <span class="law-used">Law of Iterated Expectations</span>:</p>
+                        \[E[(Y - E[Y|X])(E[Y|X] - m(X))] = E[(E[Y|X] - m(X)) \cdot E[Y - E[Y|X] | X]]\]
+                        <p>Since \(E[Y - E[Y|X] | X] = E[Y|X] - E[Y|X] = 0\), the cross-term = 0.</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Conclusion:</strong>
+                        \[E[(Y - m(X))^2] = \underbrace{E[(Y - E[Y|X])^2]}_{\text{fixed}} + \underbrace{E[(E[Y|X] - m(X))^2]}_{\geq 0}\]
+                        <p>Minimized when \(m(X) = E[Y|X]\).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>I.2: Law of Iterated Expectations & Variance Decomposition</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Law of Iterated Expectations (LIE)</div>
+            \[E[Y] = E[E[Y|X]]\]
+            <p>"The expected value of the conditional expectation equals the unconditional expectation."</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Verification (Discrete Case)</div>
+            \[E[E[Y|X]] = \sum_x E[Y|X=x] \cdot P(X=x) = \sum_x \sum_y y \cdot P(Y=y|X=x) \cdot P(X=x)\]
+            \[= \sum_x \sum_y y \cdot P(Y=y, X=x) = \sum_y y \cdot P(Y=y) = E[Y]\]
+            <p class="step-explanation"><span class="law-used">Bayes: \(P(Y|X)P(X) = P(Y,X)\)</span></p>
+        </div>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Law of Total Variance (Eve's Law)</div>
+            \[\text{Var}(Y) = \text{Var}(E[Y|X]) + E[\text{Var}(Y|X)]\]
+            <p><strong>Interpretation:</strong> Total variance = Variance between groups + Average variance within groups</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Derivation</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        \[\text{Var}(Y) = E[Y^2] - (E[Y])^2\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <p>Use \(E[Y^2|X] = \text{Var}(Y|X) + (E[Y|X])^2\), so:</p>
+                        \[E[Y^2] = E[\text{Var}(Y|X)] + E[(E[Y|X])^2]\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <p>By LIE: \((E[Y])^2 = (E[E[Y|X]])^2\)</p>
+                        \[\text{Var}(Y) = E[\text{Var}(Y|X)] + E[(E[Y|X])^2] - (E[E[Y|X]])^2\]
+                        \[= E[\text{Var}(Y|X)] + \text{Var}(E[Y|X])\]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>II. Regression Notation and Dimensions</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 Matrix Form: \(Y = X\beta + u\)</div>
+            <table class="var-table">
+                <tr><th>Symbol</th><th>Dimensions</th><th>Meaning</th></tr>
+                <tr><td>\(Y\)</td><td>\(n \times 1\)</td><td>Response vector</td></tr>
+                <tr><td>\(X\)</td><td>\(n \times K\)</td><td>Design matrix (\(n\) obs, \(K\) regressors incl. intercept)</td></tr>
+                <tr><td>\(\beta\)</td><td>\(K \times 1\)</td><td>Parameter vector</td></tr>
+                <tr><td>\(u\)</td><td>\(n \times 1\)</td><td>Error vector</td></tr>
+            </table>
+            <p><strong>Check:</strong> \((n \times K)(K \times 1) = n \times 1\) ✓</p>
+        </div>
+
+        <h3>III. Random vs. Fixed</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 In \(Y_i = \beta_0 + \beta_1 X_i + u_i\)</div>
+            <table class="var-table">
+                <tr><th>Symbol</th><th>Type</th><th>Explanation</th></tr>
+                <tr><td>\(Y_i\)</td><td>Random (Data)</td><td>Observed dependent variable</td></tr>
+                <tr><td>\(X_i\)</td><td>Random (Data)</td><td>Observed regressor</td></tr>
+                <tr><td>\(\beta_0, \beta_1\)</td><td>Fixed (Parameters)</td><td>Unknown population values</td></tr>
+                <tr><td>\(u_i\)</td><td>Random (Unobserved)</td><td>Error term</td></tr>
+            </table>
+        </div>
+
+        <h3>IV. General \(L^q\) Loss Minimization</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 Definition</div>
+            <p>The \(L^q\) loss is \(\mathcal{L}_q(c) = E[|Y - c|^q]\). Define \(m_q = \arg\min_c E[|Y - c|^q]\).</p>
+        </div>
+
+        <h4>IV.1: \(m_2 = E[Y]\) (Mean minimizes L² loss)</h4>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Differentiate:</strong> \(\frac{d}{dc} E[(Y-c)^2] = -2E[Y-c]\)
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Set to zero:</strong> \(E[Y-c] = 0 \Rightarrow c = E[Y]\)
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Second derivative:</strong> \(\frac{d^2}{dc^2} = 2 > 0\) confirms minimum.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4>IV.2: \(m_1 =\) Median (Median minimizes L¹ loss)</h4>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        \[\frac{d}{dc} E[|Y-c|] = \int_{-\infty}^c f(y)dy - \int_c^{\infty} f(y)dy = F(c) - (1-F(c)) = 2F(c) - 1\]
+                        <p class="step-explanation"><span class="law-used">Leibniz integral rule</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Set to zero:</strong> \(2F(c) - 1 = 0 \Rightarrow F(c) = \frac{1}{2}\)
+                        <p>This is the definition of the <strong>median</strong>!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4>IV.⋆⋆: As \(q \downarrow 0\), \(m_q \to\) Mode</h4>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition</div>
+            <p>As \(q \to 0\): \(|Y - c|^q \to \begin{cases} 1 & Y \neq c \\ 0 & Y = c \end{cases}\)</p>
+            <p>So \(E[|Y - c|^q] \to P(Y \neq c)\). Minimizing this maximizes \(P(Y = c)\), giving the <strong>mode</strong>.</p>
+        </div>
+    </section>
+
+    <!-- PART II -->
+    <section id="part2">
+        <h2>Part II: Simple Linear Regression</h2>
+
+        <div class="box definition">
+            <div class="box-title">📘 The Model</div>
+            <p>\(Y_i = \beta_0 + \beta_1 X_i + u_i\), with \(E[u_i | X_i] = 0\)</p>
+            <table class="var-table">
+                <tr><th>Symbol</th><th>Meaning</th></tr>
+                <tr><td>\(\bar{Y}, \bar{X}\)</td><td>Sample means</td></tr>
+                <tr><td>\(\hat{\beta}_0, \hat{\beta}_1\)</td><td>OLS estimators</td></tr>
+                <tr><td>\(\sigma^2\)</td><td>Error variance (homoskedastic)</td></tr>
+                <tr><td>\(\sigma_i^2\)</td><td>Error variance for obs \(i\) (heteroskedastic)</td></tr>
+            </table>
+        </div>
+
+        <h3>I. OLS Derivation</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 OLS Estimators</div>
+            \[\hat{\beta}_1 = \frac{\sum(X_i - \bar{X})(Y_i - \bar{Y})}{\sum(X_i - \bar{X})^2}, \quad \hat{\beta}_0 = \bar{Y} - \hat{\beta}_1\bar{X}\]
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Derivation</div>
+            <p><strong>Minimize:</strong> \(S(\beta_0, \beta_1) = \sum(Y_i - \beta_0 - \beta_1 X_i)^2\)</p>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>FOC w.r.t. \(\beta_0\):</strong>
+                        \[\frac{\partial S}{\partial \beta_0} = -2\sum(Y_i - \beta_0 - \beta_1 X_i) = 0\]
+                        \[\Rightarrow \sum Y_i = n\beta_0 + \beta_1 \sum X_i \Rightarrow \hat{\beta}_0 = \bar{Y} - \hat{\beta}_1\bar{X}\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>FOC w.r.t. \(\beta_1\):</strong>
+                        \[\frac{\partial S}{\partial \beta_1} = -2\sum X_i(Y_i - \beta_0 - \beta_1 X_i) = 0\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Substitute \(\hat{\beta}_0\) and solve:</strong>
+                        \[\sum X_i Y_i - n\bar{X}\bar{Y} = \hat{\beta}_1(\sum X_i^2 - n\bar{X}^2)\]
+                        \[\hat{\beta}_1 = \frac{\sum(X_i - \bar{X})(Y_i - \bar{Y})}{\sum(X_i - \bar{X})^2}\]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Identity: \(\sum(X_i - \bar{X})^2 = \sum X_i(X_i - \bar{X})\)</div>
+            <p>LHS: \(\sum X_i^2 - 2\bar{X}\sum X_i + n\bar{X}^2 = \sum X_i^2 - n\bar{X}^2\)</p>
+            <p>RHS: \(\sum X_i^2 - \bar{X}\sum X_i = \sum X_i^2 - n\bar{X}^2\) ✓</p>
+        </div>
+
+        <h3>II. Variance of \(\hat{\beta}_1\)</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Variance Formulas</div>
+            <p><strong>Homoskedastic:</strong> \(\text{Var}(\hat{\beta}_1) = \frac{\sigma^2}{\sum(X_i - \bar{X})^2}\)</p>
+            <p><strong>Heteroskedastic (sandwich):</strong> \(\text{Var}(\hat{\beta}_1) = \frac{\sum(X_i - \bar{X})^2\sigma_i^2}{(\sum(X_i - \bar{X})^2)^2}\)</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Derivation (Homoskedastic)</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <p>Define \(w_i = \frac{X_i - \bar{X}}{\sum(X_j - \bar{X})^2}\). Then \(\hat{\beta}_1 = \sum w_i Y_i = \beta_1 + \sum w_i u_i\)</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        \[\text{Var}(\hat{\beta}_1|X) = \sum w_i^2 \text{Var}(u_i|X) = \sigma^2 \sum w_i^2 = \frac{\sigma^2}{\sum(X_i - \bar{X})^2}\]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box definition">
+            <div class="box-title">📘 Standard Errors in Practice</div>
+            <table class="var-table">
+                <tr><th>Type</th><th>Description</th><th>When to Use</th></tr>
+                <tr><td>Homoskedastic</td><td>Classical SE</td><td>Constant variance (rare)</td></tr>
+                <tr><td>HC0</td><td>Basic robust</td><td>Heteroskedasticity; large \(n\)</td></tr>
+                <tr><td>HC3</td><td>Leverage-adjusted</td><td>Small samples; influential obs</td></tr>
+            </table>
+            <p><strong>R:</strong> <code>sandwich</code> + <code>lmtest</code>. <strong>Stata:</strong> <code>, robust</code></p>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition</div>
+            <p>Variance of \(\hat{\beta}_1\) decreases when: (1) \(\sigma^2\) is smaller (less noise), (2) \(\sum(X_i-\bar{X})^2\) is larger (more spread in \(X\)).</p>
+        </div>
+    </section>
+
+    <!-- PART III -->
+    <section id="part3">
+        <h2>Part III: Leave-One-Out, Hat Matrix & GCV</h2>
+
+        <div class="box definition">
+            <div class="box-title">📘 Key Matrices</div>
+            <table class="var-table">
+                <tr><th>Symbol</th><th>Definition</th><th>Dimensions</th></tr>
+                <tr><td>\(P\)</td><td>\(X(X^\top X)^{-1}X^\top\) (hat/projection matrix)</td><td>\(n \times n\)</td></tr>
+                <tr><td>\(M\)</td><td>\(I - P\) (residual maker)</td><td>\(n \times n\)</td></tr>
+                <tr><td>\(\hat{Y}\)</td><td>\(PY\) (fitted values)</td><td>\(n \times 1\)</td></tr>
+                <tr><td>\(\hat{u}\)</td><td>\(MY = Y - \hat{Y}\) (residuals)</td><td>\(n \times 1\)</td></tr>
+                <tr><td>\(P_{ii}\) or \(h_{ii}\)</td><td>Leverage of observation \(i\)</td><td>Scalar</td></tr>
+                <tr><td>RSS</td><td>\(\hat{u}^\top\hat{u}\)</td><td>Scalar</td></tr>
+            </table>
+        </div>
+
+        <h3>I.1: \(P\) is Symmetric and Idempotent</h3>
+
+        <div class="box proof">
+            <div class="box-title">✅ Symmetry</div>
+            \[P^\top = (X(X^\top X)^{-1}X^\top)^\top = X((X^\top X)^{-1})^\top X^\top = X(X^\top X)^{-1}X^\top = P\]
+            <p class="step-explanation"><span class="law-used">\((AB)^\top = B^\top A^\top\)</span>, and \(X^\top X\) symmetric ⟹ inverse symmetric</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Idempotence</div>
+            \[P^2 = X(X^\top X)^{-1}X^\top X(X^\top X)^{-1}X^\top = X(X^\top X)^{-1}X^\top = P\]
+            <p class="step-explanation"><span class="law-used">\(A^{-1}A = I\)</span></p>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition</div>
+            <p>\(P\) projects onto column space of \(X\). Projecting twice = projecting once. \(P\) "puts a hat on \(Y\)": \(\hat{Y} = PY\).</p>
+        </div>
+
+        <h3>I.2: \(\text{tr}(P) = K\)</h3>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof</div>
+            \[\text{tr}(P) = \text{tr}(X(X^\top X)^{-1}X^\top) = \text{tr}(X^\top X(X^\top X)^{-1}) = \text{tr}(I_K) = K\]
+            <p class="step-explanation"><span class="law-used">Cyclic property: \(\text{tr}(ABC) = \text{tr}(CAB)\)</span></p>
+        </div>
+
+        <h3>II. Properties of \(M = I - P\)</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Key Results</div>
+            <ul>
+                <li>\(MY = \hat{u}\) (residuals)</li>
+                <li>\(MX = 0\) (residuals ⊥ regressors)</li>
+                <li>\(M\) is symmetric and idempotent</li>
+                <li>\(\text{tr}(M) = n - K\)</li>
+            </ul>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proofs</div>
+            <p>\(MY = (I-P)Y = Y - PY = Y - \hat{Y} = \hat{u}\) ✓</p>
+            <p>\(MX = (I-P)X = X - X(X^\top X)^{-1}X^\top X = X - X = 0\) ✓</p>
+        </div>
+
+        <h3>III. RSS and Expected Value</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 RSS Formulas</div>
+            \[\text{RSS} = \hat{u}^\top\hat{u} = Y^\top MY, \quad E[\text{RSS}] = \sigma^2(n-K)\]
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Derivation of \(E[\text{RSS}]\)</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <p>Since \(MX = 0\): \(MY = M(X\beta + u) = Mu\)</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        \[\text{RSS} = u^\top M u\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <p><span class="law-used">Expectation of quadratic form</span>: \(E[u^\top A u] = \text{tr}(A\Sigma)\) when \(E[u]=0\)</p>
+                        \[E[\text{RSS}] = \text{tr}(M \cdot \sigma^2 I) = \sigma^2 \text{tr}(M) = \sigma^2(n-K)\]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>IV. PRESS and GCV</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Leave-One-Out Shortcut</div>
+            \[e_i^{(-i)} = \frac{e_i}{1 - P_{ii}}\]
+            <p>where \(e_i\) is ordinary residual and \(P_{ii}\) is leverage.</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Key Insight (Sherman-Morrison-Woodbury)</div>
+            <p>The identity \((A + uv^\top)^{-1} = A^{-1} - \frac{A^{-1}uv^\top A^{-1}}{1 + v^\top A^{-1}u}\) lets us compute leave-one-out without refitting.</p>
+            <p>Key step: \(P_{ii} = x_i^\top(X^\top X)^{-1}x_i\) captures how much observation \(i\) influences its own fit.</p>
+        </div>
+
+        <div class="box definition">
+            <div class="box-title">📘 PRESS and GCV</div>
+            <p><strong>PRESS:</strong> \(\text{PRESS} = \sum\left(\frac{e_i}{1-P_{ii}}\right)^2\) — true leave-one-out CV</p>
+            <p><strong>GCV:</strong> \(\text{GCV} = \frac{1}{n}\frac{\sum e_i^2}{(1 - df/n)^2}\) — approximation using avg leverage</p>
+            <p><strong>Use:</strong> Model selection, tuning regularization parameters.</p>
+        </div>
+
+        <div class="box theorem">
+            <div class="box-title">📐 ⋆ Jackknife Variance = HC3</div>
+            <p>The jackknife variance using \(\hat{\beta}_{(-i)}\) equals HC3:</p>
+            \[\hat{V}_{HC3} = (X^\top X)^{-1}\left(\sum \frac{x_i x_i^\top e_i^2}{(1-P_{ii})^2}\right)(X^\top X)^{-1}\]
+        </div>
+    </section>
+
+    <!-- PART IV -->
+    <section id="part4">
+        <h2>Part IV: Inference and Properties of OLS</h2>
+
+        <div class="box definition">
+            <div class="box-title">📘 Standard Assumptions</div>
+            <table class="var-table">
+                <tr><th>Label</th><th>Name</th><th>Statement</th></tr>
+                <tr><td>SLR1</td><td>Linearity</td><td>\(Y = X\beta + u\)</td></tr>
+                <tr><td>SLR2</td><td>Random Sampling</td><td>\((Y_i, X_i)\) i.i.d.</td></tr>
+                <tr><td>SLR3</td><td>No Perfect Collinearity</td><td>\(X^\top X\) invertible</td></tr>
+                <tr><td>SLR4</td><td>Zero Conditional Mean</td><td>\(E[u|X] = 0\)</td></tr>
+                <tr><td>SLR5</td><td>Homoskedasticity</td><td>\(\text{Var}(u|X) = \sigma^2 I\)</td></tr>
+                <tr><td>(SLR6)</td><td>Normality</td><td>\(u|X \sim N(0, \sigma^2 I)\)</td></tr>
+            </table>
+        </div>
+
+        <h3>I. Unbiasedness</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Theorem</div>
+            <p>Under SLR1-SLR4: \(E[\hat{\beta}|X] = \beta\)</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        \[\hat{\beta} = (X^\top X)^{-1}X^\top Y = (X^\top X)^{-1}X^\top(X\beta + u) = \beta + (X^\top X)^{-1}X^\top u\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        \[E[\hat{\beta}|X] = \beta + (X^\top X)^{-1}X^\top E[u|X] = \beta + 0 = \beta\]
+                        <p class="step-explanation"><span class="law-used">SLR4: \(E[u|X] = 0\)</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box warning">
+            <div class="box-title">⚠️ What Violates Unbiasedness?</div>
+            <ul>
+                <li><strong>Omitted variable bias:</strong> Correlated omitted variable</li>
+                <li><strong>Measurement error in \(X\)</strong></li>
+                <li><strong>Simultaneity:</strong> \(Y\) affects \(X\)</li>
+                <li><strong>Sample selection bias</strong></li>
+            </ul>
+        </div>
+
+        <h3>II. Variance of OLS</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Variance (Homoskedastic)</div>
+            \[\text{Var}(\hat{\beta}|X) = \sigma^2(X^\top X)^{-1}\]
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Derivation</div>
+            \[\text{Var}(\hat{\beta}|X) = (X^\top X)^{-1}X^\top E[uu^\top|X] X(X^\top X)^{-1}\]
+            <p>Under <span class="law-used">SLR5</span>: \(E[uu^\top|X] = \sigma^2 I\)</p>
+            \[= \sigma^2(X^\top X)^{-1}X^\top X(X^\top X)^{-1} = \sigma^2(X^\top X)^{-1}\]
+        </div>
+
+        <h3>III. Estimating \(\sigma^2\)</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Unbiased Estimator</div>
+            \[\hat{\sigma}^2 = \frac{\hat{u}^\top\hat{u}}{n-K} = \frac{\text{RSS}}{n-K}, \quad E[\hat{\sigma}^2] = \sigma^2\]
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Why \(n-K\)?</div>
+            <p>We "use up" \(K\) degrees of freedom estimating \(K\) parameters. From Part III: \(E[\text{RSS}] = \sigma^2(n-K)\).</p>
+        </div>
+
+        <h3>IV. t-Test</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 t-Test Setup</div>
+            <p><strong>Null:</strong> \(H_0: \beta_j = \beta_{j,0}\)</p>
+            <p><strong>Test statistic:</strong> \(t = \frac{\hat{\beta}_j - \beta_{j,0}}{\text{SE}(\hat{\beta}_j)}\) where \(\text{SE}(\hat{\beta}_j) = \sqrt{\hat{\sigma}^2[(X^\top X)^{-1}]_{jj}}\)</p>
+            <p><strong>Distribution:</strong> \(t \sim t_{n-K}\) under \(H_0\) (with normality)</p>
+        </div>
+
+        <h3>V. Testing \(\beta_1 = \beta_2\)</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 Setup</div>
+            <p>Model: \(y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + e_i\)</p>
+            <p><strong>Null:</strong> \(H_0: \beta_1 - \beta_2 = 0\)</p>
+            <p><strong>Test statistic:</strong> \(t = \frac{\hat{\beta}_1 - \hat{\beta}_2}{\sqrt{\text{Var}(\hat{\beta}_1) + \text{Var}(\hat{\beta}_2) - 2\text{Cov}(\hat{\beta}_1, \hat{\beta}_2)}}\)</p>
+            <p><strong>Distribution:</strong> \(t \sim t_{n-3}\) under \(H_0\)</p>
+        </div>
+
+        <h3>VI. F-Test for Nested Models</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 F-Test</div>
+            <p><strong>Restricted:</strong> \(y = X_1\beta_1 + e\) (\(k_1\) params)</p>
+            <p><strong>Unrestricted:</strong> \(y = X_1\beta_1 + X_2\beta_2 + e\) (\(k_1 + k_2\) params)</p>
+            <p><strong>Null:</strong> \(H_0: \beta_2 = 0\)</p>
+            <p><strong>Test statistic:</strong> \(F = \frac{(\text{RSS}_R - \text{RSS}_U)/k_2}{\text{RSS}_U/(n-k_1-k_2)} \sim F_{k_2, n-k_1-k_2}\)</p>
+            <p><strong>Interpretation:</strong> Reject \(H_0\) ⟹ prefer larger model.</p>
+        </div>
+
+        <h3>VII. Gauss-Markov Theorem</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 BLUE</div>
+            <p>Under SLR1-SLR5, OLS is <strong>Best Linear Unbiased Estimator</strong>: smallest variance among all linear unbiased estimators.</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof Sketch</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        Any linear estimator: \(\tilde{\beta} = CY\). Unbiasedness requires \(CX = I\).
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        Write \(C = (X^\top X)^{-1}X^\top + D\) where \(DX = 0\).
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        \(\text{Var}(\tilde{\beta}|X) = \sigma^2(X^\top X)^{-1} + \sigma^2 DD^\top \geq \sigma^2(X^\top X)^{-1}\)
+                        <p>Equality iff \(D = 0\), i.e., \(\tilde{\beta} = \hat{\beta}\).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>VIII. Asymptotic Distribution</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Asymptotic Normality</div>
+            \[\sqrt{n}(\hat{\beta} - \beta) \xrightarrow{d} N(0, Q^{-1}\Omega Q^{-1})\]
+            <p>where \(Q = \text{plim}\frac{X^\top X}{n}\), \(\Omega = \text{plim}\frac{X^\top\Sigma X}{n}\)</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Derivation</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        \[\hat{\beta} - \beta = \left(\frac{X^\top X}{n}\right)^{-1}\frac{X^\top u}{n}\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <span class="law-used">WLLN</span>: \(\frac{X^\top X}{n} \xrightarrow{p} Q\)
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <span class="law-used">CLT</span>: \(\frac{1}{\sqrt{n}}\sum x_i u_i \xrightarrow{d} N(0, \Omega)\)
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <span class="law-used">CMT</span> + <span class="law-used">Slutsky</span>: Combine to get result.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box definition">
+            <div class="box-title">📘 Laws Summary</div>
+            <table class="var-table">
+                <tr><th>Law</th><th>Statement</th><th>Use</th></tr>
+                <tr><td>WLLN</td><td>\(\bar{X}_n \xrightarrow{p} \mu\)</td><td>\(X^\top X/n \to Q\)</td></tr>
+                <tr><td>CLT</td><td>\(\sqrt{n}(\bar{X}_n - \mu) \xrightarrow{d} N\)</td><td>\(X^\top u/\sqrt{n} \to N\)</td></tr>
+                <tr><td>CMT</td><td>\(g(X_n) \to g(X)\)</td><td>Matrix inversion</td></tr>
+                <tr><td>Slutsky</td><td>Products of limits</td><td>Combining</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- PART V -->
+    <section id="part5">
+        <h2>Part V: Multiple Regression, FE & Clustering</h2>
+
+        <h3>I. Matrix OLS</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Key Formulas</div>
+            <p><strong>Normal equations:</strong> \(X^\top X\hat{\beta} = X^\top Y\)</p>
+            <p><strong>OLS:</strong> \(\hat{\beta} = (X^\top X)^{-1}X^\top Y\)</p>
+            <p><strong>Orthogonality:</strong> \(X^\top\hat{u} = 0\)</p>
+        </div>
+
+        <h3>II. Frisch-Waugh-Lovell Theorem</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 FWL Theorem</div>
+            <p>For \(Y = X_1\beta_1 + X_2\beta_2 + u\), let \(M_1 = I - X_1(X_1^\top X_1)^{-1}X_1^\top\).</p>
+            <p>Then: \(\hat{\beta}_2 = (X_2^\top M_1 X_2)^{-1}X_2^\top M_1 Y\)</p>
+            <p>i.e., regress residualized \(Y\) on residualized \(X_2\).</p>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition</div>
+            <p>To get the effect of \(X_2\) "controlling for" \(X_1\): remove what \(X_1\) explains from both \(Y\) and \(X_2\), then regress.</p>
+        </div>
+
+        <h3>III. Robust t-test (Sandwich)</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 Sandwich Variance</div>
+            <p>Under heteroskedasticity \(\text{Var}(u|X) = \Sigma\):</p>
+            \[\text{Var}(\hat{\beta}) = (X^\top X)^{-1}(X^\top\Sigma X)(X^\top X)^{-1}\]
+            <p>Estimated by plugging in \(\hat{u}_i^2\) for \(\sigma_i^2\).</p>
+        </div>
+
+        <h3>IV. F-test for \(R\beta = r\)</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 General Linear Hypothesis</div>
+            <p><strong>Null:</strong> \(H_0: R\beta = r\) (\(q\) restrictions)</p>
+            <p><strong>Test statistic:</strong> \(F = \frac{(R\hat{\beta} - r)^\top[R(X^\top X)^{-1}R^\top]^{-1}(R\hat{\beta} - r)/q}{\hat{\sigma}^2} \sim F_{q, n-K}\)</p>
+        </div>
+
+        <h3>V. Fixed Effects</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 Panel Data Setup</div>
+            <p>\(Y_{it} = \alpha_i + X_{it}'\beta + u_{it}\) where \(\alpha_i\) is individual fixed effect.</p>
+            <p><strong>Within transformation:</strong> \(\tilde{Y}_{it} = Y_{it} - \bar{Y}_i\) (demean by individual)</p>
+            <p><strong>Equivalence:</strong> Same as including \(n-1\) individual dummies.</p>
+            <p><strong>DOF adjustment:</strong> Lose \(n\) degrees of freedom for \(n\) fixed effects.</p>
+        </div>
+
+        <h3>VI. Cluster-Robust Standard Errors</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 One-Way Clustering</div>
+            <p>With \(G\) clusters:</p>
+            \[\hat{V}_{cluster} = (X^\top X)^{-1}\left(\sum_{g=1}^G X_g^\top\hat{u}_g\hat{u}_g^\top X_g\right)(X^\top X)^{-1}\]
+            <p><strong>Use:</strong> When errors are correlated within clusters (e.g., students in schools, individuals over time).</p>
+        </div>
+
+        <h3>VII. ⋆ Two-Way FE: Negative Weights</h3>
+
+        <div class="box warning">
+            <div class="box-title">⚠️ Negative Weights Problem</div>
+            <p>In two-way FE (unit + time), the estimated treatment effect can be a weighted average with some negative weights. This means some treatment effects are subtracted, potentially yielding misleading estimates when effects are heterogeneous.</p>
+        </div>
+
+        <h3>VIII. ⋆ Compound Symmetry GLS</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 Setup</div>
+            <p>Error covariance: \(\Sigma = \sigma^2 I + \tau^2 J\) where \(J\) is matrix of ones.</p>
+            <p>Invert using Sherman-Morrison:</p>
+            \[\Sigma^{-1} = \frac{1}{\sigma^2}\left(I - \frac{\tau^2}{\sigma^2 + n\tau^2}J\right)\]
+            <p><strong>GLS:</strong> \(\hat{\beta}_{GLS} = (X^\top\Sigma^{-1}X)^{-1}X^\top\Sigma^{-1}Y\)</p>
+            <p><strong>Link to clusters:</strong> This is the variance structure for exchangeable (equicorrelated) errors within clusters.</p>
+        </div>
+    </section>
+
+    <!-- PART VI: DOUBLE MACHINE LEARNING (COMPREHENSIVE) -->
+    <section id="part6">
+        <h2>Part VI: Double Machine Learning (DML) — Complete Treatment</h2>
+
+        <div class="box intuition">
+            <div class="box-title">💡 The Big Picture: Why DML?</div>
+            <p><strong>The Problem:</strong> We want to estimate a causal effect \(\theta\) while controlling for many confounders \(X\). Traditional methods fail when \(X\) is high-dimensional (more variables than observations, or complex nonlinear relationships).</p>
+            <p><strong>The Solution:</strong> Use machine learning to handle the high-dimensional nuisance functions, but do it carefully to preserve valid statistical inference on \(\theta\).</p>
+            <p><strong>The "Double":</strong> We partial out the effect of \(X\) from <em>both</em> the outcome \(Y\) and the treatment \(T\) — hence "double" machine learning.</p>
+        </div>
+
+        <h3>The Partially Linear Model</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 Model Setup</div>
+            <p><strong>Structural Equations:</strong></p>
+            \[Y_i = \theta T_i + f(X_i) + e_i \quad \text{(Outcome equation)}\]
+            \[T_i = g(X_i) + u_i \quad \text{(Treatment/Selection equation)}\]
+            
+            <table class="var-table">
+                <tr><th>Symbol</th><th>Meaning</th><th>Type</th></tr>
+                <tr><td>\(Y_i\)</td><td>Outcome variable</td><td>Observed</td></tr>
+                <tr><td>\(T_i\)</td><td>Treatment variable (binary or continuous)</td><td>Observed</td></tr>
+                <tr><td>\(X_i\)</td><td>High-dimensional controls/confounders</td><td>Observed</td></tr>
+                <tr><td>\(\theta\)</td><td>Causal effect of \(T\) on \(Y\) — <strong>target parameter</strong></td><td>Unknown scalar</td></tr>
+                <tr><td>\(f(X_i)\)</td><td>Effect of confounders on outcome — <strong>nuisance</strong></td><td>Unknown function</td></tr>
+                <tr><td>\(g(X_i) = E[T_i|X_i]\)</td><td>Propensity/conditional mean of treatment — <strong>nuisance</strong></td><td>Unknown function</td></tr>
+                <tr><td>\(e_i\)</td><td>Structural error in outcome equation</td><td>Unobserved</td></tr>
+                <tr><td>\(u_i = T_i - g(X_i)\)</td><td>Residual variation in treatment</td><td>Unobserved</td></tr>
+            </table>
+        </div>
+
+        <h3>Identification Assumptions</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 Conditions for \(\theta\) to be Estimable</div>
+            
+            <h4>A1: Conditional Exogeneity (Unconfoundedness)</h4>
+            \[E[e_i | X_i, T_i] = 0 \quad \text{and} \quad E[u_i | X_i] = 0\]
+            <p><em>Interpretation:</em> After controlling for \(X\), treatment is as good as randomly assigned. No unmeasured confounders.</p>
+            
+            <h4>A2: Overlap (Common Support)</h4>
+            \[0 < P(T_i = 1 | X_i) < 1 \quad \text{for all } X_i\]
+            <p><em>Interpretation:</em> For every covariate value, there's positive probability of being treated or untreated.</p>
+            
+            <h4>A3: Regularity Conditions on \(f\) and \(g\)</h4>
+            <p>The nuisance functions belong to function classes that can be consistently estimated by ML methods (e.g., Hölder smoothness, approximate sparsity).</p>
+            
+            <h4>A4: Rate Condition (Critical!)</h4>
+            \[\|\hat{f} - f\|_2 \cdot \|\hat{g} - g\|_2 = o_p(n^{-1/2})\]
+            <p><em>Interpretation:</em> The product of the estimation errors must vanish faster than \(n^{-1/2}\). If each converges at rate \(n^{-1/4}\) or faster, this is satisfied.</p>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Why the Rate Condition Matters</div>
+            <p>For \(\sqrt{n}\)-inference on \(\theta\), we need the bias from estimating nuisance functions to be negligible. The bias is proportional to the <em>product</em> of errors in \(\hat{f}\) and \(\hat{g}\). This is the key insight: errors multiply, not add!</p>
+        </div>
+
+        <h3>The Naive Approach and Why It Fails</h3>
+
+        <div class="box warning">
+            <div class="box-title">⚠️ The Naive (Wrong) Approach</div>
+            <p><strong>Idea:</strong> Just plug in ML estimates \(\hat{f}, \hat{g}\) and run OLS.</p>
+            <p><strong>Problem 1 — Regularization Bias:</strong> ML methods like LASSO introduce bias to reduce variance. This bias doesn't vanish at \(\sqrt{n}\) rate.</p>
+            <p><strong>Problem 2 — Overfitting Bias:</strong> Using the same data to estimate \(\hat{f}, \hat{g}\) and then \(\theta\) creates dependence that biases the estimator.</p>
+        </div>
+
+        <h3>The DML Solution: Neyman Orthogonality + Cross-Fitting</h3>
+
+        <h4>Step 1: Construct an Orthogonal Moment Condition</h4>
+
+        <div class="box theorem">
+            <div class="box-title">📐 The Key Insight: Residual-on-Residual Regression</div>
+            <p>Define residualized variables:</p>
+            \[\tilde{Y}_i = Y_i - f(X_i) = \theta T_i + e_i\]
+            \[\tilde{T}_i = T_i - g(X_i) = u_i\]
+            <p>Then the model becomes:</p>
+            \[\tilde{Y}_i = \theta \tilde{T}_i + e_i\]
+            <p>This is just a simple regression of \(\tilde{Y}\) on \(\tilde{T}\)!</p>
+        </div>
+
+        <div class="box definition">
+            <div class="box-title">📘 The Orthogonal Moment Condition</div>
+            <p>The moment condition for \(\theta\) is:</p>
+            \[\psi(W_i; \theta, f, g) = (T_i - g(X_i))(Y_i - \theta T_i - f(X_i)) = \tilde{T}_i(\tilde{Y}_i - \theta\tilde{T}_i)\]
+            <p>At the true values: \(E[\psi(W_i; \theta_0, f_0, g_0)] = 0\)</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof of Neyman Orthogonality</div>
+            <p><strong>Neyman orthogonality</strong> means: the moment condition is insensitive (to first order) to perturbations in the nuisance functions.</p>
+            
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Compute the pathwise derivative w.r.t. \(f\):</strong>
+                        \[\frac{\partial}{\partial f} E[\psi] = -E[(T_i - g(X_i)) \cdot 1] = -E[u_i] = 0\]
+                        <p class="step-explanation">Since \(E[u_i] = E[T_i - g(X_i)] = E[T_i] - E[E[T_i|X_i]] = 0\) by <span class="law-used">LIE</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Compute the pathwise derivative w.r.t. \(g\):</strong>
+                        \[\frac{\partial}{\partial g} E[\psi] = -E[(Y_i - \theta T_i - f(X_i)) \cdot 1] = -E[e_i] = 0\]
+                        <p class="step-explanation">Since \(E[e_i] = 0\) by assumption A1.</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Conclusion:</strong> Both derivatives are zero! Small errors in estimating \(f\) or \(g\) have <em>no first-order effect</em> on the moment condition.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition for Orthogonality</div>
+            <p>The moment condition involves \(\tilde{T}_i = T_i - g(X_i)\), which is orthogonal to any function of \(X\) by construction. So errors in \(\hat{f}(X)\) get "projected out." Similarly, \(e_i\) is orthogonal to \(X\), so errors in \(\hat{g}(X)\) don't matter to first order.</p>
+            <p><strong>Key insight:</strong> This is why we residualize <em>both</em> \(Y\) and \(T\). If we only residualized one, we wouldn't have orthogonality!</p>
+        </div>
+
+        <h4>Step 2: Cross-Fitting to Eliminate Overfitting Bias</h4>
+
+        <div class="box definition">
+            <div class="box-title">📘 The Cross-Fitting Algorithm (DML2)</div>
+            <ol>
+                <li><strong>Split</strong> the data into \(K\) folds (typically \(K = 5\)): \(I_1, I_2, \ldots, I_K\)</li>
+                <li><strong>For each fold \(k = 1, \ldots, K\):</strong>
+                    <ul>
+                        <li>Use data <em>excluding</em> fold \(k\) to estimate \(\hat{f}^{(-k)}\) and \(\hat{g}^{(-k)}\)</li>
+                        <li>For observations \(i \in I_k\), compute:
+                            \[\hat{\tilde{Y}}_i = Y_i - \hat{f}^{(-k)}(X_i)\]
+                            \[\hat{\tilde{T}}_i = T_i - \hat{g}^{(-k)}(X_i)\]
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Pool</strong> all observations and compute:
+                    \[\hat{\theta}_{DML} = \frac{\sum_{i=1}^n \hat{\tilde{T}}_i \hat{\tilde{Y}}_i}{\sum_{i=1}^n \hat{\tilde{T}}_i^2}\]
+                </li>
+            </ol>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Why Cross-Fitting?</div>
+            <p>When we predict \(\hat{f}(X_i)\) using a model trained on data including observation \(i\), the prediction is <em>correlated</em> with \(e_i\) (the model "learned" from this observation). Cross-fitting breaks this dependence: observation \(i\) is predicted using a model that never saw observation \(i\).</p>
+        </div>
+
+        <h3>Complete Derivation of the Influence Function</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 The Four Terms Decomposition</div>
+            <p>The estimation error can be decomposed as:</p>
+            \[\hat{\theta} - \theta = \underbrace{\frac{1}{n}\sum \tilde{T}_i e_i / \hat{Q}}_{\text{Term 1: Main}} + \underbrace{\frac{1}{n}\sum \tilde{T}_i (\hat{f} - f) / \hat{Q}}_{\text{Term 2: f-error}} + \underbrace{\frac{1}{n}\sum (\hat{g} - g) e_i / \hat{Q}}_{\text{Term 3: g-error}} + \underbrace{\frac{1}{n}\sum (\hat{g}-g)(\hat{f}-f) / \hat{Q}}_{\text{Term 4: Product}}\]
+            <p>where \(\hat{Q} = \frac{1}{n}\sum \hat{\tilde{T}}_i^2\).</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Full Derivation</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Start with the estimator:</strong>
+                        \[\hat{\theta} = \frac{\sum \hat{\tilde{T}}_i \hat{\tilde{Y}}_i}{\sum \hat{\tilde{T}}_i^2}\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Expand the estimated residuals:</strong>
+                        \[\hat{\tilde{Y}}_i = Y_i - \hat{f}(X_i) = \underbrace{(Y_i - f(X_i))}_{\tilde{Y}_i} + \underbrace{(f(X_i) - \hat{f}(X_i))}_{-(\hat{f}-f)}\]
+                        \[\hat{\tilde{T}}_i = T_i - \hat{g}(X_i) = \underbrace{(T_i - g(X_i))}_{\tilde{T}_i} + \underbrace{(g(X_i) - \hat{g}(X_i))}_{-(\hat{g}-g)}\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Substitute into numerator:</strong>
+                        \[\sum \hat{\tilde{T}}_i \hat{\tilde{Y}}_i = \sum [\tilde{T}_i - (\hat{g}-g)][\tilde{Y}_i - (\hat{f}-f)]\]
+                        <p>Expand:</p>
+                        \[= \sum \tilde{T}_i \tilde{Y}_i - \sum \tilde{T}_i(\hat{f}-f) - \sum (\hat{g}-g)\tilde{Y}_i + \sum(\hat{g}-g)(\hat{f}-f)\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Use \(\tilde{Y}_i = \theta\tilde{T}_i + e_i\):</strong>
+                        \[\sum \tilde{T}_i \tilde{Y}_i = \theta\sum\tilde{T}_i^2 + \sum\tilde{T}_i e_i\]
+                        \[\sum (\hat{g}-g)\tilde{Y}_i = \theta\sum(\hat{g}-g)\tilde{T}_i + \sum(\hat{g}-g)e_i\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <strong>Collect terms:</strong>
+                        <p>After algebra, dividing by \(\sum\hat{\tilde{T}}_i^2\) and subtracting \(\theta\):</p>
+                        \[\hat{\theta} - \theta = \frac{\sum\tilde{T}_i e_i}{\sum\hat{\tilde{T}}_i^2} - \frac{\sum\tilde{T}_i(\hat{f}-f)}{\sum\hat{\tilde{T}}_i^2} - \frac{\sum(\hat{g}-g)e_i}{\sum\hat{\tilde{T}}_i^2} + \frac{\sum(\hat{g}-g)(\hat{f}-f)}{\sum\hat{\tilde{T}}_i^2}\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <strong>Analyze each term:</strong>
+                        <ul>
+                            <li><strong>Term 1:</strong> \(\frac{1}{n}\sum\tilde{T}_i e_i \xrightarrow{d} N(0, \cdot)\) by CLT — this drives the limiting distribution</li>
+                            <li><strong>Term 2:</strong> \(E[\tilde{T}_i(\hat{f}-f)] = E[u_i \cdot \text{function of } X] = 0\) by orthogonality</li>
+                            <li><strong>Term 3:</strong> \(E[(\hat{g}-g)e_i] = 0\) since \(e_i \perp X_i\) and \(\hat{g}-g\) is function of \(X\)</li>
+                            <li><strong>Term 4:</strong> \(O_p(\|\hat{f}-f\| \cdot \|\hat{g}-g\|) = o_p(n^{-1/2})\) by rate condition</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Asymptotic Normality of DML</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Main Result</div>
+            <p>Under assumptions A1-A4:</p>
+            \[\sqrt{n}(\hat{\theta}_{DML} - \theta_0) \xrightarrow{d} N(0, V)\]
+            <p>where the asymptotic variance is:</p>
+            \[V = \frac{E[e_i^2 \cdot (T_i - g(X_i))^2]}{(E[(T_i - g(X_i))^2])^2} = \frac{E[e_i^2 u_i^2]}{(E[u_i^2])^2}\]
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof of Asymptotic Normality</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>From the decomposition, only Term 1 matters asymptotically:</strong>
+                        \[\sqrt{n}(\hat{\theta} - \theta) = \frac{\frac{1}{\sqrt{n}}\sum\tilde{T}_i e_i}{\frac{1}{n}\sum\hat{\tilde{T}}_i^2} + o_p(1)\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Apply CLT to numerator:</strong>
+                        <p>Define \(Z_i = \tilde{T}_i e_i = u_i e_i\). Then \(E[Z_i] = E[u_i e_i] = E[E[u_i e_i|X_i]] = E[u_i \cdot 0] = 0\).</p>
+                        \[\frac{1}{\sqrt{n}}\sum Z_i \xrightarrow{d} N(0, E[u_i^2 e_i^2])\]
+                        <p class="step-explanation"><span class="law-used">Central Limit Theorem</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Apply WLLN to denominator:</strong>
+                        \[\frac{1}{n}\sum\hat{\tilde{T}}_i^2 \xrightarrow{p} E[\tilde{T}_i^2] = E[u_i^2]\]
+                        <p class="step-explanation"><span class="law-used">Weak Law of Large Numbers</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Apply Slutsky's Theorem:</strong>
+                        \[\sqrt{n}(\hat{\theta} - \theta) = \frac{N(0, E[u_i^2 e_i^2])}{E[u_i^2]} \xrightarrow{d} N\left(0, \frac{E[u_i^2 e_i^2]}{(E[u_i^2])^2}\right)\]
+                        <p class="step-explanation"><span class="law-used">Slutsky's Theorem</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box definition">
+            <div class="box-title">📘 Variance Estimation</div>
+            <p>The asymptotic variance can be estimated by:</p>
+            \[\hat{V} = \frac{\frac{1}{n}\sum\hat{\tilde{T}}_i^2 \hat{e}_i^2}{\left(\frac{1}{n}\sum\hat{\tilde{T}}_i^2\right)^2}\]
+            <p>where \(\hat{e}_i = \hat{\tilde{Y}}_i - \hat{\theta}\hat{\tilde{T}}_i\).</p>
+            <p><strong>95% Confidence Interval:</strong> \(\hat{\theta} \pm 1.96 \cdot \sqrt{\hat{V}/n}\)</p>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Summary: Why DML Works</div>
+            <ol>
+                <li><strong>Orthogonality</strong> ensures first-order insensitivity to nuisance estimation errors</li>
+                <li><strong>Cross-fitting</strong> eliminates overfitting bias from using same data twice</li>
+                <li><strong>Rate condition</strong> ensures second-order bias is negligible</li>
+                <li><strong>Result:</strong> Valid \(\sqrt{n}\)-inference on \(\theta\) even with ML nuisance estimation!</li>
+            </ol>
+        </div>
+
+        <div class="box example">
+            <div class="box-title">📝 Practical Implementation</div>
+            <p><strong>In Python (using econml or doubleml packages):</strong></p>
+            <ol>
+                <li>Choose ML methods for \(f\) and \(g\) (e.g., LASSO, Random Forest, Neural Net)</li>
+                <li>Use 5-fold cross-fitting</li>
+                <li>The packages handle all the machinery automatically</li>
+                <li>Report \(\hat{\theta}\) with standard errors and confidence intervals</li>
+            </ol>
+            <p><strong>Common ML choices:</strong> LASSO (sparse), Random Forest (nonlinear), Gradient Boosting, Neural Networks</p>
+        </div>
+    </section>
+
+    <!-- PART VII: PROBABILITY FOUNDATIONS -->
+    <section id="part7">
+        <h2>Part VII: Probability Foundations — LLN, CLT, and Key Inequalities</h2>
+
+        <div class="box intuition">
+            <div class="box-title">💡 The Big Picture</div>
+            <p>These theorems are the <strong>engine</strong> behind all of asymptotic statistics. They tell us:</p>
+            <ul>
+                <li><strong>WLLN:</strong> Sample averages converge to population means (consistency)</li>
+                <li><strong>CLT:</strong> Sample averages are approximately normal (inference)</li>
+                <li><strong>Chebyshev:</strong> Provides the foundation for proving WLLN</li>
+                <li><strong>Slutsky:</strong> Lets us combine convergent sequences (putting it all together)</li>
+            </ul>
+        </div>
+
+        <h3>Modes of Convergence</h3>
+
+        <div class="box definition">
+            <div class="box-title">📘 Types of Convergence</div>
+            <table class="var-table">
+                <tr><th>Type</th><th>Notation</th><th>Definition</th><th>Intuition</th></tr>
+                <tr>
+                    <td>In Probability</td>
+                    <td>\(X_n \xrightarrow{p} X\)</td>
+                    <td>\(\forall \epsilon > 0: \lim_{n\to\infty} P(|X_n - X| > \epsilon) = 0\)</td>
+                    <td>Probability of being far from limit vanishes</td>
+                </tr>
+                <tr>
+                    <td>In Distribution</td>
+                    <td>\(X_n \xrightarrow{d} X\)</td>
+                    <td>\(\lim_{n\to\infty} F_{X_n}(x) = F_X(x)\) at continuity points</td>
+                    <td>CDFs converge; shapes become similar</td>
+                </tr>
+                <tr>
+                    <td>Almost Surely</td>
+                    <td>\(X_n \xrightarrow{a.s.} X\)</td>
+                    <td>\(P(\lim_{n\to\infty} X_n = X) = 1\)</td>
+                    <td>Converges on almost every sample path</td>
+                </tr>
+                <tr>
+                    <td>In Mean Square</td>
+                    <td>\(X_n \xrightarrow{L^2} X\)</td>
+                    <td>\(\lim_{n\to\infty} E[(X_n - X)^2] = 0\)</td>
+                    <td>Average squared distance vanishes</td>
+                </tr>
+            </table>
+            <p><strong>Hierarchy:</strong> \(L^2 \Rightarrow p \Rightarrow d\), and \(a.s. \Rightarrow p\)</p>
+        </div>
+
+        <h3>Chebyshev's Inequality</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Chebyshev's Inequality</div>
+            <p>For any random variable \(X\) with finite mean \(\mu\) and variance \(\sigma^2\), and any \(k > 0\):</p>
+            \[P(|X - \mu| \geq k\sigma) \leq \frac{1}{k^2}\]
+            <p>Equivalently, for any \(\epsilon > 0\):</p>
+            \[P(|X - \mu| \geq \epsilon) \leq \frac{\sigma^2}{\epsilon^2}\]
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof of Chebyshev's Inequality</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Start with Markov's Inequality:</strong>
+                        <p>For non-negative \(Y\) and \(a > 0\): \(P(Y \geq a) \leq \frac{E[Y]}{a}\)</p>
+                        <p class="step-explanation"><span class="law-used">Markov's Inequality</span> (proof: \(E[Y] \geq E[Y \cdot \mathbf{1}_{Y \geq a}] \geq a \cdot P(Y \geq a)\))</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Apply to \(Y = (X - \mu)^2\):</strong>
+                        \[P((X - \mu)^2 \geq \epsilon^2) \leq \frac{E[(X-\mu)^2]}{\epsilon^2} = \frac{\sigma^2}{\epsilon^2}\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Note that \((X - \mu)^2 \geq \epsilon^2 \Leftrightarrow |X - \mu| \geq \epsilon\):</strong>
+                        \[P(|X - \mu| \geq \epsilon) \leq \frac{\sigma^2}{\epsilon^2} \quad \square\]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition</div>
+            <p>Chebyshev tells us: <em>not too much probability can be far from the mean</em>. The bound depends only on the variance—it works for ANY distribution!</p>
+            <p><strong>Example:</strong> At least 75% of data is within 2 standard deviations (\(k=2: 1-1/4 = 0.75\)).</p>
+            <p><strong>Limitation:</strong> The bound is often loose (Gaussian: 95% within 2σ, not just 75%).</p>
+        </div>
+
+        <h3>Weak Law of Large Numbers (WLLN)</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Weak Law of Large Numbers</div>
+            <p>Let \(X_1, X_2, \ldots, X_n\) be i.i.d. with mean \(\mu\) and finite variance \(\sigma^2\). Then:</p>
+            \[\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{p} \mu\]
+            <p>i.e., \(\forall \epsilon > 0: \lim_{n \to \infty} P(|\bar{X}_n - \mu| > \epsilon) = 0\)</p>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof of WLLN (using Chebyshev)</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Compute \(E[\bar{X}_n]\):</strong>
+                        \[E[\bar{X}_n] = E\left[\frac{1}{n}\sum_{i=1}^n X_i\right] = \frac{1}{n}\sum_{i=1}^n E[X_i] = \frac{1}{n} \cdot n\mu = \mu\]
+                        <p class="step-explanation"><span class="law-used">Linearity of expectation</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Compute \(\text{Var}(\bar{X}_n)\):</strong>
+                        \[\text{Var}(\bar{X}_n) = \text{Var}\left(\frac{1}{n}\sum_{i=1}^n X_i\right) = \frac{1}{n^2}\sum_{i=1}^n \text{Var}(X_i) = \frac{1}{n^2} \cdot n\sigma^2 = \frac{\sigma^2}{n}\]
+                        <p class="step-explanation"><span class="law-used">Independence: \(\text{Var}(\sum X_i) = \sum\text{Var}(X_i)\)</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Apply Chebyshev to \(\bar{X}_n\):</strong>
+                        \[P(|\bar{X}_n - \mu| \geq \epsilon) \leq \frac{\text{Var}(\bar{X}_n)}{\epsilon^2} = \frac{\sigma^2}{n\epsilon^2}\]
+                        <p class="step-explanation"><span class="law-used">Chebyshev's Inequality</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Take limit:</strong>
+                        \[\lim_{n \to \infty} P(|\bar{X}_n - \mu| \geq \epsilon) \leq \lim_{n \to \infty} \frac{\sigma^2}{n\epsilon^2} = 0\]
+                        <p>Therefore \(\bar{X}_n \xrightarrow{p} \mu\). \(\square\)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition</div>
+            <p><strong>What it says:</strong> As sample size grows, the sample mean gets arbitrarily close to the population mean with probability approaching 1.</p>
+            <p><strong>Why it works:</strong> The variance of \(\bar{X}_n\) shrinks at rate \(1/n\), so the distribution concentrates around \(\mu\).</p>
+            <p><strong>For OLS:</strong> This is why \(\frac{X'X}{n} \xrightarrow{p} E[x_i x_i']\) — each element is an average!</p>
+        </div>
+
+        <h3>Central Limit Theorem (CLT)</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Central Limit Theorem (Lindeberg-Lévy)</div>
+            <p>Let \(X_1, X_2, \ldots, X_n\) be i.i.d. with mean \(\mu\) and finite variance \(\sigma^2 > 0\). Then:</p>
+            \[\frac{\sqrt{n}(\bar{X}_n - \mu)}{\sigma} \xrightarrow{d} N(0, 1)\]
+            <p>Equivalently:</p>
+            \[\sqrt{n}(\bar{X}_n - \mu) \xrightarrow{d} N(0, \sigma^2)\]
+            <p>Or in terms of the sum:</p>
+            \[\frac{\sum_{i=1}^n X_i - n\mu}{\sigma\sqrt{n}} \xrightarrow{d} N(0, 1)\]
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof of CLT (via Characteristic Functions)</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Define standardized variable:</strong>
+                        <p>Let \(Z_n = \frac{\sqrt{n}(\bar{X}_n - \mu)}{\sigma} = \frac{1}{\sigma\sqrt{n}}\sum_{i=1}^n (X_i - \mu)\)</p>
+                        <p>We want to show \(Z_n \xrightarrow{d} N(0,1)\).</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Use characteristic functions:</strong>
+                        <p>The characteristic function of \(Z_n\) is \(\phi_{Z_n}(t) = E[e^{itZ_n}]\).</p>
+                        <p class="step-explanation"><span class="law-used">Lévy's Continuity Theorem</span>: \(X_n \xrightarrow{d} X\) iff \(\phi_{X_n}(t) \to \phi_X(t)\)</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Define \(Y_i = \frac{X_i - \mu}{\sigma}\) (standardized individual obs):</strong>
+                        <p>\(E[Y_i] = 0\), \(\text{Var}(Y_i) = 1\)</p>
+                        <p>Then \(Z_n = \frac{1}{\sqrt{n}}\sum_{i=1}^n Y_i\)</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Compute characteristic function of \(Z_n\):</strong>
+                        \[\phi_{Z_n}(t) = E\left[e^{it \cdot \frac{1}{\sqrt{n}}\sum Y_i}\right] = E\left[\prod_{i=1}^n e^{itY_i/\sqrt{n}}\right]\]
+                        <p>By independence:</p>
+                        \[= \prod_{i=1}^n E[e^{itY_i/\sqrt{n}}] = \left[\phi_Y\left(\frac{t}{\sqrt{n}}\right)\right]^n\]
+                        <p class="step-explanation"><span class="law-used">Independence: \(E[\prod] = \prod E[\cdot]\)</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <strong>Taylor expand \(\phi_Y(s)\) around \(s = 0\):</strong>
+                        \[\phi_Y(s) = E[e^{isY}] = 1 + isE[Y] + \frac{(is)^2}{2}E[Y^2] + o(s^2)\]
+                        \[= 1 + 0 - \frac{s^2}{2} \cdot 1 + o(s^2) = 1 - \frac{s^2}{2} + o(s^2)\]
+                        <p class="step-explanation">Using \(E[Y] = 0\) and \(E[Y^2] = 1\).</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <strong>Substitute \(s = t/\sqrt{n}\):</strong>
+                        \[\phi_Y\left(\frac{t}{\sqrt{n}}\right) = 1 - \frac{t^2}{2n} + o\left(\frac{1}{n}\right)\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">7</div>
+                    <div class="step-content">
+                        <strong>Take the \(n\)-th power and limit:</strong>
+                        \[\phi_{Z_n}(t) = \left[1 - \frac{t^2}{2n} + o\left(\frac{1}{n}\right)\right]^n\]
+                        <p>Recall: \(\lim_{n\to\infty}(1 + a/n)^n = e^a\)</p>
+                        \[\lim_{n\to\infty} \phi_{Z_n}(t) = e^{-t^2/2}\]
+                        <p class="step-explanation"><span class="law-used">Exponential limit: \((1 + x/n)^n \to e^x\)</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">8</div>
+                    <div class="step-content">
+                        <strong>Recognize the limit:</strong>
+                        <p>\(e^{-t^2/2}\) is the characteristic function of \(N(0,1)\)!</p>
+                        <p>By Lévy's continuity theorem: \(Z_n \xrightarrow{d} N(0,1)\). \(\square\)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition for CLT</div>
+            <p><strong>What it says:</strong> No matter what distribution the \(X_i\) come from, the standardized sample mean is approximately normal for large \(n\).</p>
+            <p><strong>Why it works:</strong> When you add many independent random variables:</p>
+            <ul>
+                <li>Each contributes a small "kick" to the total</li>
+                <li>The kicks are independent, so their effects average out</li>
+                <li>The distribution of the sum smooths out to a bell curve</li>
+            </ul>
+            <p><strong>For OLS:</strong> \(\frac{1}{\sqrt{n}}\sum x_i u_i \xrightarrow{d} N(0, \Omega)\) even though we don't know the distribution of \(x_i u_i\)!</p>
+        </div>
+
+        <div class="box example">
+            <div class="box-title">📝 CLT in Action</div>
+            <p><strong>Setup:</strong> Roll a fair die 100 times. Let \(X_i\) = outcome of roll \(i\).</p>
+            <p>\(\mu = E[X_i] = 3.5\), \(\sigma^2 = \text{Var}(X_i) = 35/12 \approx 2.92\)</p>
+            <p><strong>By CLT:</strong></p>
+            \[\bar{X}_{100} \approx N\left(3.5, \frac{2.92}{100}\right) = N(3.5, 0.0292)\]
+            <p>So \(\bar{X}_{100}\) has std dev \(\approx 0.17\), and we expect it to be within \(\pm 0.34\) of 3.5 about 95% of the time.</p>
+        </div>
+
+        <h3>Slutsky's Theorem</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Slutsky's Theorem</div>
+            <p>If \(X_n \xrightarrow{d} X\) and \(Y_n \xrightarrow{p} c\) (a constant), then:</p>
+            <ul>
+                <li>\(X_n + Y_n \xrightarrow{d} X + c\)</li>
+                <li>\(X_n \cdot Y_n \xrightarrow{d} c \cdot X\)</li>
+                <li>\(X_n / Y_n \xrightarrow{d} X / c\) (if \(c \neq 0\))</li>
+            </ul>
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof Sketch (for product)</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Write:</strong>
+                        \[X_n Y_n = X_n c + X_n(Y_n - c)\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>First term:</strong> \(X_n c \xrightarrow{d} cX\) by <span class="law-used">Continuous Mapping Theorem</span>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Second term:</strong> Since \(Y_n - c \xrightarrow{p} 0\) and \(X_n\) is bounded in probability,
+                        \[X_n(Y_n - c) \xrightarrow{p} 0\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Combine:</strong> \(X_n Y_n \xrightarrow{d} cX + 0 = cX\). \(\square\)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition</div>
+            <p><strong>Key insight:</strong> You can combine sequences with different types of convergence, as long as one converges to a constant.</p>
+            <p><strong>For OLS:</strong> We have \(\frac{1}{\sqrt{n}}X'u \xrightarrow{d} N\) and \(\frac{X'X}{n} \xrightarrow{p} Q\). Slutsky lets us combine:</p>
+            \[\sqrt{n}(\hat{\beta} - \beta) = \left(\frac{X'X}{n}\right)^{-1} \frac{X'u}{\sqrt{n}} \xrightarrow{d} Q^{-1} \cdot N(0, \Omega)\]
+        </div>
+
+        <h3>Continuous Mapping Theorem (CMT)</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Continuous Mapping Theorem</div>
+            <p>If \(X_n \xrightarrow{d} X\) and \(g\) is continuous at all points in the support of \(X\), then:</p>
+            \[g(X_n) \xrightarrow{d} g(X)\]
+            <p>Similarly for \(\xrightarrow{p}\) and \(\xrightarrow{a.s.}\)</p>
+        </div>
+
+        <div class="box intuition">
+            <div class="box-title">💡 Intuition</div>
+            <p>Continuous functions preserve convergence. If \(X_n\) is close to \(X\), then \(g(X_n)\) is close to \(g(X)\).</p>
+            <p><strong>For OLS:</strong> Matrix inversion is continuous (away from singular matrices), so:</p>
+            \[\left(\frac{X'X}{n}\right)^{-1} \xrightarrow{p} Q^{-1}\]
+        </div>
+
+        <h3>Delta Method</h3>
+
+        <div class="box theorem">
+            <div class="box-title">📐 Delta Method</div>
+            <p>If \(\sqrt{n}(X_n - \theta) \xrightarrow{d} N(0, \sigma^2)\) and \(g\) is differentiable at \(\theta\) with \(g'(\theta) \neq 0\), then:</p>
+            \[\sqrt{n}(g(X_n) - g(\theta)) \xrightarrow{d} N(0, [g'(\theta)]^2 \sigma^2)\]
+        </div>
+
+        <div class="box proof">
+            <div class="box-title">✅ Proof</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Taylor expand \(g(X_n)\) around \(\theta\):</strong>
+                        \[g(X_n) = g(\theta) + g'(\theta)(X_n - \theta) + o_p(|X_n - \theta|)\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Multiply by \(\sqrt{n}\):</strong>
+                        \[\sqrt{n}(g(X_n) - g(\theta)) = g'(\theta) \cdot \sqrt{n}(X_n - \theta) + o_p(1)\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Apply Slutsky:</strong>
+                        \[\xrightarrow{d} g'(\theta) \cdot N(0, \sigma^2) = N(0, [g'(\theta)]^2\sigma^2)\]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Putting It All Together: Asymptotic Distribution of OLS</h3>
+
+        <div class="box example">
+            <div class="box-title">📝 Complete Derivation of OLS Asymptotics</div>
+            <div class="derivation">
+                <div class="derivation-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Setup:</strong>
+                        \[\hat{\beta} - \beta = (X'X)^{-1}X'u = \left(\frac{X'X}{n}\right)^{-1}\frac{X'u}{n}\]
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Apply WLLN to \(\frac{X'X}{n}\):</strong>
+                        \[\frac{X'X}{n} = \frac{1}{n}\sum x_i x_i' \xrightarrow{p} E[x_i x_i'] = Q\]
+                        <p class="step-explanation"><span class="law-used">WLLN</span> (each element is a sample average)</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Apply CLT to \(\frac{X'u}{\sqrt{n}}\):</strong>
+                        <p>Let \(Z_i = x_i u_i\). Then \(E[Z_i] = E[x_i u_i] = E[x_i E[u_i|x_i]] = 0\).</p>
+                        \[\frac{1}{\sqrt{n}}\sum x_i u_i \xrightarrow{d} N(0, \Omega)\]
+                        <p>where \(\Omega = E[x_i x_i' u_i^2]\) (under heteroskedasticity)</p>
+                        <p class="step-explanation"><span class="law-used">CLT</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Apply CMT to the inverse:</strong>
+                        \[\left(\frac{X'X}{n}\right)^{-1} \xrightarrow{p} Q^{-1}\]
+                        <p class="step-explanation"><span class="law-used">CMT</span> (matrix inversion is continuous)</p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <strong>Apply Slutsky:</strong>
+                        \[\sqrt{n}(\hat{\beta} - \beta) = \left(\frac{X'X}{n}\right)^{-1} \cdot \frac{X'u}{\sqrt{n}} \xrightarrow{d} Q^{-1} \cdot N(0, \Omega)\]
+                        <p class="step-explanation"><span class="law-used">Slutsky</span></p>
+                    </div>
+                </div>
+                <div class="derivation-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <strong>Final result:</strong>
+                        \[\sqrt{n}(\hat{\beta} - \beta) \xrightarrow{d} N(0, Q^{-1}\Omega Q^{-1})\]
+                        <p>Under homoskedasticity (\(\Omega = \sigma^2 Q\)): \(N(0, \sigma^2 Q^{-1})\)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box definition">
+            <div class="box-title">📘 Summary: Which Law Where?</div>
+            <table class="var-table">
+                <tr><th>Object</th><th>Convergence</th><th>Law Used</th><th>Result</th></tr>
+                <tr><td>\(\frac{X'X}{n}\)</td><td>\(\xrightarrow{p}\)</td><td>WLLN</td><td>\(Q\)</td></tr>
+                <tr><td>\(\left(\frac{X'X}{n}\right)^{-1}\)</td><td>\(\xrightarrow{p}\)</td><td>CMT</td><td>\(Q^{-1}\)</td></tr>
+                <tr><td>\(\frac{X'u}{\sqrt{n}}\)</td><td>\(\xrightarrow{d}\)</td><td>CLT</td><td>\(N(0, \Omega)\)</td></tr>
+                <tr><td>\(\sqrt{n}(\hat{\beta}-\beta)\)</td><td>\(\xrightarrow{d}\)</td><td>Slutsky</td><td>\(N(0, Q^{-1}\Omega Q^{-1})\)</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- Summary -->
+    <section>
+        <h2>Quick Reference Summary</h2>
+        
+        <div class="box example">
+            <div class="box-title">📝 Essential Formulas</div>
+            <table class="var-table">
+                <tr><th>Topic</th><th>Key Formula</th></tr>
+                <tr><td>Best L² predictor</td><td>\(E[Y|X]\) minimizes \(E[(Y-m(X))^2]\)</td></tr>
+                <tr><td>OLS</td><td>\(\hat{\beta} = (X^\top X)^{-1}X^\top Y\)</td></tr>
+                <tr><td>Variance (homosked)</td><td>\(\text{Var}(\hat{\beta}) = \sigma^2(X^\top X)^{-1}\)</td></tr>
+                <tr><td>Hat matrix</td><td>\(P = X(X^\top X)^{-1}X^\top\), \(\text{tr}(P) = K\)</td></tr>
+                <tr><td>LOO residual</td><td>\(e_i^{(-i)} = e_i/(1-P_{ii})\)</td></tr>
+                <tr><td>\(\hat{\sigma}^2\)</td><td>\(\text{RSS}/(n-K)\)</td></tr>
+                <tr><td>t-statistic</td><td>\((\hat{\beta}_j - \beta_{j,0})/\text{SE}(\hat{\beta}_j)\)</td></tr>
+                <tr><td>F-statistic</td><td>\((\text{RSS}_R - \text{RSS}_U)/q \div \text{RSS}_U/(n-K)\)</td></tr>
+            </table>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "\\[", right: "\\]", display: true},
+                {left: "$", right: "$", display: false},
+                {left: "\\(", right: "\\)", display: false}
+            ],
+            throwOnError: false
+        });
+    });
+</script>
+</body>
+</html>
