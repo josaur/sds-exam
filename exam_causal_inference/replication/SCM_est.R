@@ -40,7 +40,7 @@ treatment_id <- "United Kingdom"
 controls_id  <- setdiff(colnames(dat[[1]]), treatment_id)
 times_dep  <- cbind("rr_votes" = c(1979,1994))
 
-seeds <- sample(4322:97834, 5, replace = FALSE) 
+seeds <- sample(4322:97834, 50, replace = FALSE) 
 
 
 
@@ -70,7 +70,7 @@ res <- mscmt(dat, treatment_id, controls_id, times_dep, times_pred,
    placebo = TRUE, placebo.with.treated = FALSE,
    return.ts = FALSE, cl = cl)
 
-
+r
 # In place p-value, two sided and one-sided [>]
 
 # post-reform periods: 1999, 2004, 2009, 2014
